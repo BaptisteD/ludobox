@@ -1,0 +1,109 @@
+/**
+ * Ludobox design tokens — single source of truth.
+ * Transcribed from DESIGN.md ("Tabletop pop"). No raw colors, shadows, or
+ * radii should appear anywhere else in the codebase: reference these vars.
+ */
+
+:root {
+  /* ---- Color · ground & ink ---- */
+  --bg-cream: #fdf3e3; /* app canvas, the paper ground */
+  --bg-cream-raised: #fbe7c0; /* highlighted row (rank 1), soft callouts */
+  --surface-white: #ffffff; /* date chips, overflow menu, rename input */
+  --on-dark-cream: #fff6e9; /* text/icons on coral, teal, ink */
+  --ink-primary: #2a2018; /* titles, body, ALL outlines and shadows */
+  --ink-muted: #7a6a56; /* meta, section labels, secondary text */
+  --ink-faint: #c7b493; /* disclosure chevrons, lowest emphasis */
+
+  /* ---- Color · game-piece roles ---- */
+  --coral: #e14b6a; /* primary CTA, "Compétitif", failure, rank-3, destructive */
+  --gold: #f4b53c; /* record card surface, rank-1 badge */
+  --gold-ink: #c98a1e; /* score numbers in history (on cream) */
+  --gold-trophy: #e1a11f; /* trophy icon in history rows */
+  --gold-on-gold: #7a4f1a; /* muted text on the gold record card */
+  --teal: #1fa091; /* "Coopératif", success, rank-2, win portion of bars */
+
+  /* Hairline divider used inside white popovers (autocomplete, overflow). */
+  --divider-hairline: #f0e2c8;
+
+  /* ---- The signature · outline weights (solid ink) ---- */
+  --outline-thin: 2px; /* chips, badges, date tiles, form inputs */
+  --outline-mid: 2.5px; /* CTA, record card */
+  --outline-thick: 3px; /* dice motif */
+
+  /* ---- The signature · hard offset shadows (ink, 0 blur, 0 spread) ---- */
+  --shadow-piece: 4px 5px 0 var(--ink-primary); /* CTA and pieces */
+  --shadow-record: 5px 6px 0 var(--ink-primary); /* record card, overflow menu */
+  --shadow-soft: 2px 2px 0 var(--ink-primary); /* small avatars, winner toggle */
+
+  /* ---- The signature · earned tilts ---- */
+  --tilt-record: -1.4deg;
+  --tilt-dice-a: -8deg;
+  --tilt-dice-b: 7deg;
+
+  /* ---- Radius ---- */
+  --radius-chip: 14px; /* date chip, rename input */
+  --radius-cta: 16px; /* CTA, leaderboard highlight row, overflow menu */
+  --radius-dice: 18px;
+  --radius-record: 22px; /* the gold feature card */
+  --radius-round: 999px; /* tags, rank badges, status pills, avatars */
+
+  /* ---- Spacing (4px rhythm) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px; /* within-row gaps (12–13px) */
+  --space-4: 16px;
+  --space-5: 20px; /* screen horizontal padding (px-5) */
+  --space-6: 24px; /* section gaps (24–26px) */
+  --space-8: 32px;
+
+  --screen-padding: var(--space-5);
+  --screen-width: 390px; /* mobile baseline */
+
+  /* ---- Typography · families ---- */
+  --font-display:
+    'Baloo 2', system-ui, sans-serif; /* titles, big numbers, labels */
+  --font-text: 'Hanken Grotesk', system-ui, sans-serif; /* meta, body, units */
+
+  /* ---- Typography · scale (size / line-height / tracking) ---- */
+  /* Record / hero number, success-rate % — Baloo 2 ExtraBold */
+  --type-hero-num-size: 60px;
+  --type-hero-num-lh: 90%;
+  --type-hero-num-tracking: -0.02em;
+  /* Stat counter (parties · victoires) — Baloo 2 ExtraBold */
+  --type-counter-size: 44px;
+  --type-counter-lh: 90%;
+  --type-counter-tracking: -0.02em;
+  /* Hero play count (Fiche jeu) — Baloo 2 ExtraBold */
+  --type-play-count-size: 28px;
+  --type-play-count-lh: 90%;
+  --type-play-count-tracking: -0.01em;
+  /* Game title — Baloo 2 ExtraBold */
+  --type-game-title-size: 36px;
+  --type-game-title-lh: 102%;
+  --type-game-title-tracking: -0.01em;
+  /* Player name (Fiche joueur header) — Baloo 2 ExtraBold */
+  --type-player-name-size: 34px;
+  --type-player-name-lh: 104%;
+  --type-player-name-tracking: -0.01em;
+  /* Empty-state headline — Baloo 2 ExtraBold */
+  --type-empty-headline-size: 25px;
+  --type-empty-headline-lh: 110%;
+  /* Date number (chip) — Baloo 2 Bold */
+  --type-date-num-size: 19px;
+  --type-date-num-lh: 100%;
+  /* Section label — Hanken Grotesk ExtraBold, uppercase */
+  --type-section-label-size: 12px;
+  --type-section-label-tracking: 0.14em;
+  /* Body / meta — Hanken Grotesk Medium */
+  --type-body-size: 14px;
+  /* Date month (chip) — Hanken Grotesk Bold */
+  --type-date-month-size: 9px;
+  --type-date-month-tracking: 0.08em;
+
+  /* ---- Font weights ---- */
+  --weight-display-bold: 700;
+  --weight-display-extrabold: 800;
+  --weight-text-medium: 500;
+  --weight-text-bold: 700;
+  --weight-text-extrabold: 800;
+}

@@ -1,0 +1,60 @@
+/**
+ * Global reset + base. Reads only from tokens.css — no raw values here.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* All figures are tabular and inherit from the root (DESIGN.md §Numerals). */
+  font-variant-numeric: tabular-nums;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--bg-cream);
+  color: var(--ink-primary);
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-medium);
+  font-size: var(--type-body-size);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+/* Mobile-first 390px column, centered on wider viewports. */
+.app-shell {
+  width: 100%;
+  max-width: var(--screen-width);
+  min-height: 100dvh;
+  margin-inline: auto;
+  background: var(--bg-cream);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Honor reduced-motion globally (PRODUCT.md / DESIGN.md §Motion). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

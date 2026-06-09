@@ -1,0 +1,9 @@
+dist
+dev-dist
+coverage
+node_modules
+playwright-report
+test-results
+src/assets/fonts
+public/*.png
+*.md
