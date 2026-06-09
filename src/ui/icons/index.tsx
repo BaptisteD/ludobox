@@ -75,6 +75,38 @@ export function Chevron(props: IconProps) {
   );
 }
 
+/** Back affordance for detail headers. */
+export function ArrowLeft(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M11 6l-6 6 6 6M5 12h14" {...stroke} />
+    </Svg>
+  );
+}
+
+/** Collection tab — a shelf grid of game boxes. */
+export function Grid(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <rect x="4" y="4" width="7" height="7" rx="1.5" {...stroke} />
+      <rect x="13" y="4" width="7" height="7" rx="1.5" {...stroke} />
+      <rect x="4" y="13" width="7" height="7" rx="1.5" {...stroke} />
+      <rect x="13" y="13" width="7" height="7" rx="1.5" {...stroke} />
+    </Svg>
+  );
+}
+
+/** Joueurs tab — two players. */
+export function Users(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <circle cx="9" cy="8" r="3" {...stroke} />
+      <path d="M4 20v-1a5 5 0 0 1 10 0v1" {...stroke} />
+      <path d="M16 5.5a3 3 0 0 1 0 5M17 14.5a5 5 0 0 1 3 4.5v1" {...stroke} />
+    </Svg>
+  );
+}
+
 export function Trophy(props: IconProps) {
   return (
     <Svg {...props}>

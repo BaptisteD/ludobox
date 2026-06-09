@@ -32,15 +32,6 @@ body {
   min-height: 100dvh;
 }
 
-/* Mobile-first 390px column, centered on wider viewports. */
-.app-shell {
-  width: 100%;
-  max-width: var(--screen-width);
-  min-height: 100dvh;
-  margin-inline: auto;
-  background: var(--bg-cream);
-}
-
 button {
   font: inherit;
   color: inherit;

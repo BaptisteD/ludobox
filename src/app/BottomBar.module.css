@@ -1,0 +1,56 @@
+.bar {
+  composes: outlineMid from '@/ui/styles/signature.module.css';
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+  background: var(--bg-cream);
+  border-bottom: none;
+  border-inline: none;
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 56px;
+  padding: var(--space-1);
+  background: none;
+  color: var(--ink-muted);
+}
+
+/* The icon pill: outlined when idle, filled ink piece when active (shape cue). */
+.disc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-round);
+  border: var(--outline-thin) solid transparent;
+}
+
+.label {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-bold);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.tab[data-active] {
+  color: var(--ink-primary);
+}
+
+.tab[data-active] .disc {
+  background: var(--ink-primary);
+  border-color: var(--ink-primary);
+  color: var(--on-dark-cream);
+}
+
+.tab[data-active] .label {
+  font-weight: var(--weight-display-extrabold);
+}

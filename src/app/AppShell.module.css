@@ -1,0 +1,25 @@
+.shell {
+  width: 100%;
+  max-width: var(--screen-width);
+  height: 100dvh;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-cream);
+}
+
+/* The stacked area the screens live in; the bottom bar sits below it. */
+.viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+.overlay {
+  background: var(--bg-cream);
+}
