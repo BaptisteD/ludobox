@@ -1,0 +1,48 @@
+.summary {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-5);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1;
+}
+
+.number {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-extrabold);
+  font-size: var(--type-counter-size);
+  line-height: var(--type-counter-lh);
+  letter-spacing: var(--type-counter-tracking);
+  color: var(--ink-primary);
+}
+
+.winNumber {
+  color: var(--gold-ink);
+}
+
+.crown {
+  display: inline-flex;
+  color: var(--gold);
+}
+
+.label {
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-extrabold);
+  font-size: var(--type-section-label-size);
+  letter-spacing: var(--type-section-label-tracking);
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.divider {
+  width: var(--outline-thin);
+  background: var(--ink-primary);
+  flex-shrink: 0;
+}

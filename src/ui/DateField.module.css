@@ -1,0 +1,18 @@
+.button {
+  text-align: left;
+  min-height: 52px;
+}
+
+.value {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-bold);
+  font-size: 17px;
+  color: var(--ink-primary);
+}
+
+/* Rotate the chevron to point down (it strokes a right-facing caret). */
+.chevron {
+  transform: rotate(90deg);
+}

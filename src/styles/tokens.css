@@ -21,6 +21,7 @@
   --gold-trophy: #e1a11f; /* trophy icon in history rows */
   --gold-on-gold: #7a4f1a; /* muted text on the gold record card */
   --teal: #1fa091; /* "Coopératif", success, rank-2, win portion of bars */
+  --putty: #efe1c6; /* disabled CTA fill (dormant, shadow-less) */
 
   /* Hairline divider used inside white popovers (autocomplete, overflow). */
   --divider-hairline: #f0e2c8;

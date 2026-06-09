@@ -1,0 +1,53 @@
+/**
+ * The "Tabletop pop" signature, factored once (DESIGN.md §Borders & shadows).
+ * Components pull these in via CSS Modules `composes` rather than re-declaring
+ * outlines/shadows/tilts. Every value comes from tokens.css — no raw hex here.
+ */
+
+/* ---- Outlines (solid ink, varying weight) ---- */
+.outlineThin {
+  border: var(--outline-thin) solid var(--ink-primary);
+}
+.outlineMid {
+  border: var(--outline-mid) solid var(--ink-primary);
+}
+.outlineThick {
+  border: var(--outline-thick) solid var(--ink-primary);
+}
+
+/* ---- Hard offset shadows (ink, zero blur/spread) ---- */
+.shadowPiece {
+  box-shadow: var(--shadow-piece);
+}
+.shadowRecord {
+  box-shadow: var(--shadow-record);
+}
+.shadowSoft {
+  box-shadow: var(--shadow-soft);
+}
+
+/* ---- Earned tilts (rows and text never tilt) ---- */
+.tiltRecord {
+  transform: rotate(var(--tilt-record));
+}
+.tiltDiceA {
+  transform: rotate(var(--tilt-dice-a));
+}
+.tiltDiceB {
+  transform: rotate(var(--tilt-dice-b));
+}
+
+/* ---- Composite bases ---- */
+
+/* A round game piece: avatars, rank badges, status discs. */
+.pieceBase {
+  composes: outlineMid shadowPiece;
+  border-radius: var(--radius-round);
+}
+
+/* The one tilted gold feature card (record / success-rate). */
+.featureCard {
+  composes: outlineMid shadowRecord tiltRecord;
+  border-radius: var(--radius-record);
+  background: var(--gold);
+}

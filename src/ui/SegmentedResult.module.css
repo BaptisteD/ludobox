@@ -1,0 +1,38 @@
+.track {
+  composes: outlineThin from './styles/signature.module.css';
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-chip);
+  background: var(--surface-white);
+}
+
+.segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  flex: 1;
+  min-height: 44px;
+  border: none;
+  border-radius: var(--radius-chip);
+  background: transparent;
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-bold);
+  font-size: var(--type-body-size);
+  line-height: 1;
+}
+
+.idle {
+  color: var(--ink-muted);
+  background: transparent;
+}
+
+.succes {
+  background: var(--teal);
+  color: var(--on-dark-cream);
+}
+.echec {
+  background: var(--coral);
+  color: var(--on-dark-cream);
+}

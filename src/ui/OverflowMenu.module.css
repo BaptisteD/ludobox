@@ -1,0 +1,40 @@
+.menu {
+  composes: outlineMid shadowRecord from './styles/signature.module.css';
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 220px;
+  border-radius: var(--radius-cta);
+  background: var(--surface-white);
+  overflow: hidden;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 52px;
+  padding: 0 var(--space-4);
+  border: none;
+  background: none;
+  text-align: left;
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-bold);
+  font-size: 15px;
+  color: var(--ink-primary);
+}
+
+.item + .item {
+  border-top: 1px solid var(--divider-hairline);
+}
+
+.icon {
+  display: inline-flex;
+  color: var(--ink-muted);
+}
+
+.destructive {
+  color: var(--coral);
+}
+.destructive .icon {
+  color: var(--coral);
+}

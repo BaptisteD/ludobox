@@ -1,0 +1,10 @@
+.box {
+  align-items: stretch;
+  padding: var(--space-3) var(--space-4);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 72px;
+  line-height: 1.4;
+}

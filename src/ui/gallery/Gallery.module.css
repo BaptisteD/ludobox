@@ -1,0 +1,62 @@
+.page {
+  width: 100%;
+  max-width: var(--screen-width);
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-5) var(--space-8);
+}
+
+.masthead {
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-extrabold);
+  font-size: 28px;
+  color: var(--ink-primary);
+}
+
+.sub {
+  font-family: var(--font-text);
+  font-size: var(--type-body-size);
+  color: var(--ink-muted);
+}
+
+.section {
+  margin-bottom: var(--space-8);
+}
+
+.heading {
+  margin-bottom: var(--space-4);
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-extrabold);
+  font-size: var(--type-section-label-size);
+  letter-spacing: var(--type-section-label-tracking);
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.grow {
+  flex: 1;
+  min-width: 200px;
+}
+
+.note {
+  font-family: var(--font-text);
+  font-size: var(--type-body-size);
+  color: var(--ink-muted);
+}

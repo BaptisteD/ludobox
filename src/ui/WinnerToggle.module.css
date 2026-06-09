@@ -1,0 +1,51 @@
+.toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 44px hit target around the 40px control (a11y ≥44px). */
+  width: 44px;
+  height: 44px;
+  padding: 2px;
+  border: none;
+  background: none;
+}
+
+/* The visible 40px disc lives on a pseudo-element so the hit area stays 44px.
+   inset + auto margins center the fixed-size disc behind the crown. */
+.toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 40px;
+  height: 40px;
+  margin: auto;
+  border-radius: var(--radius-round);
+}
+
+/* Keep the crown above the disc. */
+.toggle > svg {
+  position: relative;
+}
+
+.on {
+  color: var(--ink-primary);
+}
+.on::before {
+  background: var(--gold);
+  border: var(--outline-thin) solid var(--ink-primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.off {
+  color: var(--ink-faint);
+}
+.off::before {
+  background: transparent;
+  border: var(--outline-thin) solid var(--ink-faint);
+}
+
+.toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

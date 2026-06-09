@@ -1,0 +1,28 @@
+.badge {
+  composes: outlineThin from './styles/signature.module.css';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-round);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-extrabold);
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* Rank 1 gold reads dark; teal/coral carry cream (DESIGN.md contrast note). */
+.gold {
+  background: var(--gold);
+  color: var(--ink-primary);
+}
+.teal {
+  background: var(--teal);
+  color: var(--on-dark-cream);
+}
+.coral {
+  background: var(--coral);
+  color: var(--on-dark-cream);
+}

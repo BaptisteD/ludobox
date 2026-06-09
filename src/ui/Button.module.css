@@ -1,0 +1,30 @@
+.cta {
+  composes: outlineMid shadowPiece from './styles/signature.module.css';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 56px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-cta);
+  background: var(--coral);
+  color: var(--on-dark-cream);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-extrabold);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.icon {
+  display: inline-flex;
+}
+
+/* Dormant: putty fill, no shadow, faint outline, muted label. */
+.cta:disabled {
+  background: var(--putty);
+  border-color: var(--ink-faint);
+  box-shadow: none;
+  color: var(--ink-muted);
+  cursor: not-allowed;
+}

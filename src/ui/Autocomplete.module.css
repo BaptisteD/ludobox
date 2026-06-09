@@ -1,0 +1,51 @@
+.popover {
+  composes: outlineThin shadowPiece from './styles/signature.module.css';
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--radius-chip);
+  background: var(--surface-white);
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--space-2) var(--space-4);
+  border: none;
+  background: none;
+  text-align: left;
+}
+
+/* Hairline divider between rows. */
+.row + .row {
+  border-top: 1px solid var(--divider-hairline);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-bold);
+  font-size: 17px;
+  color: var(--ink-primary);
+}
+
+/* Create-on-the-fly row sits on cream-raised. */
+.create {
+  background: var(--bg-cream-raised);
+}
+
+.createText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.subline {
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-medium);
+  font-size: var(--type-body-size);
+  color: var(--ink-muted);
+}

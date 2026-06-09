@@ -1,0 +1,22 @@
+.avatar {
+  composes: pieceBase from './styles/signature.module.css';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--on-dark-cream);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-extrabold);
+  line-height: 1;
+  user-select: none;
+}
+
+.coral {
+  background: var(--coral);
+}
+.teal {
+  background: var(--teal);
+}
+.ink {
+  background: var(--ink-primary);
+}

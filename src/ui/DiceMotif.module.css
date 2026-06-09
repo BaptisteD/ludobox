@@ -1,0 +1,20 @@
+.motif {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.die {
+  display: inline-flex;
+  border-radius: var(--radius-dice);
+}
+
+.coral {
+  composes: tiltDiceA from './styles/signature.module.css';
+  color: var(--coral);
+}
+
+.gold {
+  composes: tiltDiceB from './styles/signature.module.css';
+  color: var(--gold);
+}
