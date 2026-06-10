@@ -36,6 +36,7 @@ export { RecordCard, type RecordCardProps } from './RecordCard';
 export { SuccessRateCard, type SuccessRateCardProps } from './SuccessRateCard';
 export { LeaderboardRow, type LeaderboardRowProps } from './LeaderboardRow';
 export { HistoryRow, type HistoryRowProps } from './HistoryRow';
+export { formatHistoryDate } from './formatHistoryDate';
 export { StatSummary, type StatSummaryProps } from './StatSummary';
 
 export { DiceMotif, type DiceMotifProps } from './DiceMotif';

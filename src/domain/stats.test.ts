@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   competitiveGameStats,
   cooperativeGameStats,
+  gameHistory,
   playerHistory,
   playerStats,
   sortPlaysForHistory,
@@ -206,6 +207,93 @@ describe('playerHistory', () => {
 
   it('is empty for a player with no participations', () => {
     expect(playerHistory(bob, [coopOk], participations, games)).toEqual([]);
+  });
+});
+
+describe('gameHistory', () => {
+  // Two plays of Catan (competitive) plus a Pandemic play that must never leak.
+  const g1 = play({
+    id: 'g1',
+    gameId: catan.id,
+    note: 'belle partie',
+    playedAt: new Date('2026-04-10'),
+    createdAt: new Date('2026-04-10T10:00:00Z'),
+  });
+  const g2 = play({
+    id: 'g2',
+    gameId: catan.id,
+    playedAt: new Date('2026-04-12'),
+    createdAt: new Date('2026-04-12T10:00:00Z'),
+  });
+  const other = play({ id: 'other', gameId: pandemic.id });
+  const coop = play({
+    id: 'coop',
+    gameId: pandemic.id,
+    coopResult: 'failure',
+    playedAt: new Date('2026-04-11'),
+    createdAt: new Date('2026-04-11T10:00:00Z'),
+  });
+  const plays = [g1, g2, other, coop];
+  const participations = [
+    // g1: alice & carol both win (ex-aequo), bob loses; carol is archived.
+    part({ playId: 'g1', playerId: alice.id, isWinner: true, score: 8 }),
+    part({ playId: 'g1', playerId: carol.id, isWinner: true, score: 8 }),
+    part({ playId: 'g1', playerId: bob.id, isWinner: false, score: 5 }),
+    // g2: bob wins, alice has no score entered.
+    part({ playId: 'g2', playerId: bob.id, isWinner: true, score: null }),
+    part({ playId: 'g2', playerId: alice.id, isWinner: false, score: null }),
+    // coop participation (no winner / score in coop).
+    part({ playId: 'coop', playerId: alice.id }),
+  ];
+
+  it('returns only this game’s plays, newest first', () => {
+    const history = gameHistory(catan, plays, participations, players);
+    expect(history.map((e) => e.playId)).toEqual(['g2', 'g1']);
+  });
+
+  it('orders participants winners-first, then by name (case/accent-insensitive)', () => {
+    const g1Entry = gameHistory(catan, plays, participations, players).find(
+      (e) => e.playId === 'g1',
+    );
+    expect(g1Entry?.participants.map((p) => p.name)).toEqual([
+      'Alice',
+      'Carol',
+      'Bob',
+    ]);
+  });
+
+  it('carries per-participant score, win flag and archived flag (archived by name)', () => {
+    const g1Entry = gameHistory(catan, plays, participations, players).find(
+      (e) => e.playId === 'g1',
+    );
+    expect(g1Entry?.participants).toEqual([
+      { playerId: 'alice', name: 'Alice', score: 8, isWinner: true, isArchived: false },
+      { playerId: 'carol', name: 'Carol', score: 8, isWinner: true, isArchived: true },
+      { playerId: 'bob', name: 'Bob', score: 5, isWinner: false, isArchived: false },
+    ]);
+  });
+
+  it('keeps null score for an unentered competitive participation', () => {
+    const g2Entry = gameHistory(catan, plays, participations, players).find(
+      (e) => e.playId === 'g2',
+    );
+    expect(g2Entry?.participants.find((p) => p.name === 'Alice')?.score).toBeNull();
+  });
+
+  it('flags the presence of a note', () => {
+    const history = gameHistory(catan, plays, participations, players);
+    expect(history.find((e) => e.playId === 'g1')?.hasNote).toBe(true);
+    expect(history.find((e) => e.playId === 'g2')?.hasNote).toBe(false);
+  });
+
+  it('resolves the cooperative collective result', () => {
+    const [entry] = gameHistory(pandemic, plays, participations, players);
+    expect(entry).toMatchObject({ playId: 'coop', coopResult: 'failure' });
+  });
+
+  it('is empty for a game with no plays', () => {
+    const lonely: Game = { id: 'lonely', name: 'Lonely', type: 'competitive' };
+    expect(gameHistory(lonely, plays, participations, players)).toEqual([]);
   });
 });
 

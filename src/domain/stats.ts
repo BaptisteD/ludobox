@@ -67,6 +67,31 @@ export interface PlayerHistoryEntry {
   score: number | null;
 }
 
+/** One participant of a play, as the Fiche jeu history renders it. */
+export interface GameHistoryParticipant {
+  playerId: string;
+  name: string;
+  /** Participation score; `null` means not entered. Always null in coop. */
+  score: number | null;
+  isWinner: boolean;
+  /** From the player's status — drives the inline "archivé" marker. */
+  isArchived: boolean;
+}
+
+/**
+ * One line of a game's chronological history (fiche jeu §8.5): one entry per
+ * play, newest first. Participants are surfaced winners-first then by name so
+ * the UI can put the winner(s) on the title line and the rest in the meta.
+ * Pure — computed at read time; archived players stay present by name.
+ */
+export interface GameHistoryEntry {
+  playId: string;
+  playedAt: Date;
+  participants: GameHistoryParticipant[];
+  coopResult: CoopResult;
+  hasNote: boolean;
+}
+
 const namesById = (players: Player[]): Map<string, string> =>
   new Map(players.map((p) => [p.id, p.name]));
 
@@ -221,5 +246,54 @@ export function playerHistory(
         score: part.score,
       },
     ];
+  });
+}
+
+/**
+ * A game's chronological history (fiche jeu §8.5): one entry per play of the
+ * game, newest first. Each entry joins the play's participations with player
+ * names/status, ordered winners-first then by name (case/accent-insensitive)
+ * for a deterministic read. Pure — computed at read time.
+ */
+export function gameHistory(
+  game: Game,
+  plays: Play[],
+  participations: Participation[],
+  players: Player[],
+): GameHistoryEntry[] {
+  const playerById = new Map(players.map((p) => [p.id, p]));
+  const partsByPlay = new Map<string, Participation[]>();
+  for (const part of participations) {
+    const list = partsByPlay.get(part.playId);
+    if (list) list.push(part);
+    else partsByPlay.set(part.playId, [part]);
+  }
+
+  return sortPlaysForHistory(playsOfGame(game, plays)).map((play) => {
+    const parts = partsByPlay.get(play.id) ?? [];
+    const participants: GameHistoryParticipant[] = parts
+      .map((part) => {
+        const player = playerById.get(part.playerId);
+        return {
+          playerId: part.playerId,
+          name: player?.name ?? '',
+          score: part.score,
+          isWinner: part.isWinner,
+          isArchived: player?.status === 'archived',
+        };
+      })
+      .sort(
+        (a, b) =>
+          Number(b.isWinner) - Number(a.isWinner) ||
+          a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' }),
+      );
+
+    return {
+      playId: play.id,
+      playedAt: play.playedAt,
+      participants,
+      coopResult: play.coopResult ?? 'success',
+      hasNote: (play.note ?? '').trim().length > 0,
+    };
   });
 }

@@ -107,22 +107,6 @@ export async function loadPlayerSheet(
   };
 }
 
-const MONTHS_FR = [
-  'JANV',
-  'FÉVR',
-  'MARS',
-  'AVR',
-  'MAI',
-  'JUIN',
-  'JUIL',
-  'AOÛT',
-  'SEPT',
-  'OCT',
-  'NOV',
-  'DÉC',
-];
-
-/** Splits a play date into the day number and short French month for a date tile. */
-export function formatHistoryDate(date: Date): { day: number; month: string } {
-  return { day: date.getDate(), month: MONTHS_FR[date.getMonth()] };
-}
+// The date-tile adapter now lives in the kit (shared with the Fiche jeu);
+// re-exported here so existing Joueurs imports stay put.
+export { formatHistoryDate } from '@/ui';
