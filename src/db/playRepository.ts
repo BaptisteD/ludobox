@@ -73,6 +73,18 @@ export function createPlayRepository(db: LudoboxDB = defaultDb) {
     return db.plays.where('gameId').equals(gameId).toArray();
   }
 
+  /**
+   * Play count per game id, computed at read time (the project invariant: counts
+   * are never stored). Games with no play are simply absent from the map.
+   */
+  async function countByGame(): Promise<Map<string, number>> {
+    const counts = new Map<string, number>();
+    for (const { gameId } of await db.plays.toArray()) {
+      counts.set(gameId, (counts.get(gameId) ?? 0) + 1);
+    }
+    return counts;
+  }
+
   /** Deletes the play and its participations in one transaction. */
   async function remove(id: string): Promise<void> {
     await db.transaction('rw', db.plays, db.participations, async () => {
@@ -81,7 +93,7 @@ export function createPlayRepository(db: LudoboxDB = defaultDb) {
     });
   }
 
-  return { create, get, listByGame, remove };
+  return { create, get, listByGame, countByGame, remove };
 }
 
 export const playRepository = createPlayRepository();

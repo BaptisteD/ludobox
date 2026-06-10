@@ -1,0 +1,45 @@
+.form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-cream);
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* V1 has no cover image: the header is a flat placeholder band. */
+.placeholder {
+  display: block;
+  height: 96px;
+  border: var(--outline-mid) solid var(--ink-primary);
+  border-radius: var(--radius-record);
+  background: var(--bg-cream-raised);
+}
+
+.row {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.row > * {
+  flex: 1;
+  min-width: 0;
+}
+
+.error {
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-bold);
+  font-size: var(--type-body-size);
+  color: var(--coral);
+}
+
+.cta {
+  margin-top: var(--space-4);
+}

@@ -8,10 +8,23 @@
 import { BottomBar } from './BottomBar';
 import { bottomBarVisible, isFirstLevel } from './navigation/navReducer';
 import { useNavigation } from './navigation/useNavigation';
-import { CollectionScreen } from './screens/CollectionScreen';
+import type { Screen } from './navigation/types';
+import { CollectionScreen, GameDetail, GameForm } from '@/features/collection';
 import { JoueursScreen } from './screens/JoueursScreen';
 import { PlaceholderDetail } from './screens/PlaceholderDetail';
 import styles from './AppShell.module.css';
+
+/** Maps the top-of-stack detail to its screen component. */
+function renderDetail(screen: Screen) {
+  switch (screen.kind) {
+    case 'game-detail':
+      return <GameDetail gameId={screen.id} />;
+    case 'game-form':
+      return <GameForm mode={screen.mode} gameId={screen.gameId} />;
+    case 'placeholder-detail':
+      return <PlaceholderDetail screen={screen} />;
+  }
+}
 
 export function AppShell() {
   const { state, selectTab } = useNavigation();
@@ -43,8 +56,11 @@ export function AppShell() {
 
         {/* Detail overlay — only the top of the stack is mounted. */}
         {topDetail ? (
-          <div className={`${styles.layer} ${styles.overlay}`}>
-            <PlaceholderDetail key={state.stack.length} screen={topDetail} />
+          <div
+            key={state.stack.length}
+            className={`${styles.layer} ${styles.overlay}`}
+          >
+            {renderDetail(topDetail)}
           </div>
         ) : null}
       </div>

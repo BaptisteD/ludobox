@@ -19,6 +19,11 @@ export type ValidationErrorCode =
   | 'DUPLICATE_GAME_NAME'
   | 'DUPLICATE_PLAYER_NAME'
   | 'GAME_TYPE_LOCKED'
+  | 'EMPTY_GAME_NAME'
+  | 'MISSING_GAME_TYPE'
+  | 'INVALID_PLAYER_COUNT'
+  | 'MIN_GREATER_THAN_MAX'
+  | 'INVALID_DURATION'
   | 'NO_PARTICIPANTS'
   | 'NO_WINNER'
   | 'INVALID_SCORE'
@@ -88,6 +93,59 @@ export function checkGameTypeChange(
     'GAME_TYPE_LOCKED',
     'The game type cannot change once a play has been recorded.',
   );
+}
+
+/**
+ * The structural shape of a game form before persistence. `type` is optional
+ * because creation starts with no type chosen (it is required to validate).
+ */
+export interface GameDraft {
+  name: string;
+  type?: GameType;
+  minPlayers?: number;
+  maxPlayers?: number;
+  durationMin?: number;
+}
+
+/**
+ * Validates a game form draft (shared by creation and edition), per the
+ * formulaire-jeu spec §8: a non-empty name, a chosen type, min ≤ max when both
+ * bounds are set, and a strictly-positive integer duration when present. Name
+ * uniqueness is a separate, data-dependent check ({@link checkGameNameAvailable}).
+ */
+export function validateGameDraft(draft: GameDraft): ValidationResult {
+  if (draft.name.trim().length === 0) {
+    return fail('EMPTY_GAME_NAME', 'A game needs a name.');
+  }
+  if (draft.type === undefined) {
+    return fail('MISSING_GAME_TYPE', 'A game type must be chosen.');
+  }
+  const isPositiveInt = (n: number) => Number.isInteger(n) && n > 0;
+  for (const bound of [draft.minPlayers, draft.maxPlayers]) {
+    if (bound !== undefined && !isPositiveInt(bound)) {
+      return fail(
+        'INVALID_PLAYER_COUNT',
+        'Player counts must be positive whole numbers.',
+      );
+    }
+  }
+  if (
+    draft.minPlayers !== undefined &&
+    draft.maxPlayers !== undefined &&
+    draft.minPlayers > draft.maxPlayers
+  ) {
+    return fail(
+      'MIN_GREATER_THAN_MAX',
+      'The minimum cannot exceed the maximum.',
+    );
+  }
+  if (draft.durationMin !== undefined && !isPositiveInt(draft.durationMin)) {
+    return fail(
+      'INVALID_DURATION',
+      'Duration must be a positive whole number.',
+    );
+  }
+  return ok;
 }
 
 export interface PlayDraft {

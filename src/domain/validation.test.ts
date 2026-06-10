@@ -6,6 +6,7 @@ import {
   checkGameTypeChange,
   checkPlayerNameAvailable,
   DomainError,
+  validateGameDraft,
   validatePlay,
 } from './validation';
 
@@ -206,6 +207,94 @@ describe('validatePlay — cooperative', () => {
     });
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.code).toBe('SCORE_ON_COOPERATIVE');
+  });
+});
+
+describe('validateGameDraft', () => {
+  it('accepts a minimal valid draft (name + type only)', () => {
+    expect(validateGameDraft({ name: 'Catan', type: 'competitive' }).ok).toBe(
+      true,
+    );
+  });
+
+  it('rejects an empty / whitespace-only name', () => {
+    const result = validateGameDraft({ name: '   ', type: 'competitive' });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.code).toBe('EMPTY_GAME_NAME');
+  });
+
+  it('rejects a missing type (none chosen in creation)', () => {
+    const result = validateGameDraft({ name: 'Catan' });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.code).toBe('MISSING_GAME_TYPE');
+  });
+
+  it('rejects min greater than max when both are set', () => {
+    const result = validateGameDraft({
+      name: 'Catan',
+      type: 'competitive',
+      minPlayers: 5,
+      maxPlayers: 2,
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.code).toBe('MIN_GREATER_THAN_MAX');
+  });
+
+  it('accepts min equal to max', () => {
+    expect(
+      validateGameDraft({
+        name: 'Catan',
+        type: 'competitive',
+        minPlayers: 4,
+        maxPlayers: 4,
+      }).ok,
+    ).toBe(true);
+  });
+
+  it('accepts only one of min / max being set', () => {
+    expect(
+      validateGameDraft({ name: 'Catan', type: 'competitive', minPlayers: 2 })
+        .ok,
+    ).toBe(true);
+    expect(
+      validateGameDraft({ name: 'Catan', type: 'competitive', maxPlayers: 6 })
+        .ok,
+    ).toBe(true);
+  });
+
+  it('rejects a non-positive or non-integer player count', () => {
+    for (const bound of [
+      { minPlayers: 0 },
+      { minPlayers: 2.5 },
+      { maxPlayers: -1 },
+    ]) {
+      const result = validateGameDraft({
+        name: 'Catan',
+        type: 'competitive',
+        ...bound,
+      });
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.code).toBe('INVALID_PLAYER_COUNT');
+    }
+  });
+
+  it('rejects a non-positive or non-integer duration', () => {
+    for (const durationMin of [0, -10, 3.5]) {
+      const result = validateGameDraft({
+        name: 'Catan',
+        type: 'competitive',
+        durationMin,
+      });
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.code).toBe('INVALID_DURATION');
+    }
+  });
+
+  it('accepts a positive integer duration', () => {
+    expect(
+      validateGameDraft({ name: 'Catan', type: 'competitive', durationMin: 45 })
+        .ok,
+    ).toBe(true);
   });
 });
 

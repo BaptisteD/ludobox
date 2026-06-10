@@ -88,6 +88,30 @@ describe('playRepository.create', () => {
   });
 });
 
+describe('playRepository.countByGame', () => {
+  it('counts plays per game id, omitting games with none', async () => {
+    const catan = await competitiveGame();
+    const pandemic = await cooperativeGame();
+    await plays.create({
+      gameId: catan.id,
+      participations: [{ playerId: 'a', isWinner: true }],
+    });
+    await plays.create({
+      gameId: catan.id,
+      participations: [{ playerId: 'b', isWinner: true }],
+    });
+
+    const counts = await plays.countByGame();
+
+    expect(counts.get(catan.id)).toBe(2);
+    expect(counts.has(pandemic.id)).toBe(false);
+  });
+
+  it('returns an empty map when no plays exist', async () => {
+    expect((await plays.countByGame()).size).toBe(0);
+  });
+});
+
 describe('playRepository.remove', () => {
   it('deletes the play and its participations', async () => {
     const g = await competitiveGame();

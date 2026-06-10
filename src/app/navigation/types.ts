@@ -10,17 +10,23 @@
 export type Tab = 'collection' | 'joueurs';
 
 /**
- * A detail screen stacked over the current tab's first level. Brique 3 only
- * needs a placeholder kind to exercise the mechanics; briques 4–7 add real
- * kinds (game-detail, player-detail, play-detail, forms…).
+ * A detail screen stacked over the current tab's first level. Brique 3 added the
+ * placeholder kind to exercise the mechanics; briques 4–7 add the real kinds
+ * (game detail/form here, player and play screens later). Every variant carries
+ * `id` (the underlying object) and `depth` (1-based, cosmetic — the reducer only
+ * stacks by array order, never by this field).
  */
-export interface Screen {
-  kind: 'placeholder-detail';
-  /** Identity of the underlying object (a game/player id later). */
-  id: string;
-  /** Depth in the stack, 1-based — purely for placeholder display. */
-  depth: number;
-}
+export type Screen =
+  | { kind: 'placeholder-detail'; id: string; depth: number }
+  | { kind: 'game-detail'; id: string; depth: number }
+  | {
+      kind: 'game-form';
+      mode: 'create' | 'edit';
+      /** Present in edit mode — the game being edited. */
+      gameId?: string;
+      id: string;
+      depth: number;
+    };
 
 export interface NavState {
   /** The active first-level destination. */

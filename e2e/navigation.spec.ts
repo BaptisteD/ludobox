@@ -36,6 +36,10 @@ test('toggles between Collection and Joueurs', async ({ page }) => {
 
 test('dives into a detail and pops one cran back', async ({ page }) => {
   await page.goto('/');
+  // The generic placeholder stack lives on the Joueurs tab (Brique 5 fills it).
+  await bottomBar(page)
+    .getByRole('button', { name: /Joueurs/ })
+    .click();
   await page.getByRole('button', { name: 'Ouvrir un détail' }).click();
 
   await expect(page.getByTestId('detail')).toBeVisible();
@@ -51,6 +55,9 @@ test('the browser back gesture pops one cran (Android system back proxy)', async
   page,
 }) => {
   await page.goto('/');
+  await bottomBar(page)
+    .getByRole('button', { name: /Joueurs/ })
+    .click();
   await page.getByRole('button', { name: 'Ouvrir un détail' }).click();
   await expect(page.getByTestId('detail')).toBeVisible();
 
@@ -61,14 +68,18 @@ test('the browser back gesture pops one cran (Android system back proxy)', async
 
 test('re-tapping the active tab scrolls its list to top', async ({ page }) => {
   await page.goto('/');
-  const list = page.getByTestId('screen-collection');
+  // Use Joueurs: its placeholder still renders a long, scrollable filler list.
+  await bottomBar(page)
+    .getByRole('button', { name: /Joueurs/ })
+    .click();
+  const list = page.getByTestId('screen-joueurs');
   await list.evaluate((el) => el.scrollTo({ top: 400 }));
   await expect
     .poll(() => list.evaluate((el) => el.scrollTop))
     .toBeGreaterThan(0);
 
   await bottomBar(page)
-    .getByRole('button', { name: /Collection/ })
+    .getByRole('button', { name: /Joueurs/ })
     .click();
   await expect.poll(() => list.evaluate((el) => el.scrollTop)).toBe(0);
 });
