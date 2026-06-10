@@ -21,9 +21,27 @@ describe('toHistoryRow', () => {
     const row = toHistoryRow(
       entry({
         participants: [
-          { playerId: 'c', name: 'Camille', score: 142, isWinner: true, isArchived: false },
-          { playerId: 'l', name: 'Léa', score: 118, isWinner: false, isArchived: false },
-          { playerId: 't', name: 'Tom', score: 96, isWinner: false, isArchived: false },
+          {
+            playerId: 'c',
+            name: 'Camille',
+            score: 142,
+            isWinner: true,
+            isArchived: false,
+          },
+          {
+            playerId: 'l',
+            name: 'Léa',
+            score: 118,
+            isWinner: false,
+            isArchived: false,
+          },
+          {
+            playerId: 't',
+            name: 'Tom',
+            score: 96,
+            isWinner: false,
+            isArchived: false,
+          },
         ],
         hasNote: true,
       }),
@@ -41,9 +59,27 @@ describe('toHistoryRow', () => {
     const row = toHistoryRow(
       entry({
         participants: [
-          { playerId: 'c', name: 'Camille', score: 130, isWinner: true, isArchived: false },
-          { playerId: 'l', name: 'Léa', score: 130, isWinner: true, isArchived: false },
-          { playerId: 's', name: 'Sacha', score: 88, isWinner: false, isArchived: true },
+          {
+            playerId: 'c',
+            name: 'Camille',
+            score: 130,
+            isWinner: true,
+            isArchived: false,
+          },
+          {
+            playerId: 'l',
+            name: 'Léa',
+            score: 130,
+            isWinner: true,
+            isArchived: false,
+          },
+          {
+            playerId: 's',
+            name: 'Sacha',
+            score: 88,
+            isWinner: false,
+            isArchived: true,
+          },
         ],
       }),
       'competitive',
@@ -56,13 +92,30 @@ describe('toHistoryRow', () => {
     const row = toHistoryRow(
       entry({
         participants: [
-          { playerId: 'b', name: 'Bob', score: null, isWinner: true, isArchived: false },
-          { playerId: 'a', name: 'Alice', score: null, isWinner: false, isArchived: false },
+          {
+            playerId: 'b',
+            name: 'Bob',
+            score: null,
+            isWinner: true,
+            isArchived: false,
+          },
+          {
+            playerId: 'a',
+            name: 'Alice',
+            score: null,
+            isWinner: false,
+            isArchived: false,
+          },
         ],
       }),
       'competitive',
     );
-    expect(row).toMatchObject({ title: 'Bob', trophy: true, score: 'unset', meta: 'Alice' });
+    expect(row).toMatchObject({
+      title: 'Bob',
+      trophy: true,
+      score: 'unset',
+      meta: 'Alice',
+    });
   });
 
   it('maps a cooperative entry to a result chip and a participant meta', () => {
@@ -70,8 +123,20 @@ describe('toHistoryRow', () => {
       entry({
         coopResult: 'failure',
         participants: [
-          { playerId: 'c', name: 'Camille', score: null, isWinner: false, isArchived: false },
-          { playerId: 'l', name: 'Léa', score: null, isWinner: false, isArchived: false },
+          {
+            playerId: 'c',
+            name: 'Camille',
+            score: null,
+            isWinner: false,
+            isArchived: false,
+          },
+          {
+            playerId: 'l',
+            name: 'Léa',
+            score: null,
+            isWinner: false,
+            isArchived: false,
+          },
         ],
       }),
       'cooperative',
@@ -131,7 +196,10 @@ describe('loadGameSheet', () => {
   });
 
   it('loads cooperative success-rate stats', async () => {
-    const pandemic = await games.create({ name: 'Pandemic', type: 'cooperative' });
+    const pandemic = await games.create({
+      name: 'Pandemic',
+      type: 'cooperative',
+    });
     const alice = await players.create({ name: 'Alice' });
     await plays.create({
       gameId: pandemic.id,

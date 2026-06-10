@@ -115,10 +115,9 @@ export function toHistoryRow(
   if (entry.participants.some((p) => p.isArchived)) markers.push('archivé');
 
   if (type === 'cooperative') {
-    const meta = [
-      ...entry.participants.map((p) => p.name),
-      ...markers,
-    ].join(' · ');
+    const meta = [...entry.participants.map((p) => p.name), ...markers].join(
+      ' · ',
+    );
     return {
       result: entry.coopResult === 'success' ? 'succes' : 'echec',
       meta: meta || undefined,

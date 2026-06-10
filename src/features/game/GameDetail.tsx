@@ -24,12 +24,17 @@ import {
   RecordCard,
   SuccessRateCard,
   Tag,
+  Toast,
   Trash,
 } from '@/ui';
 import { gameRepository } from '@/db/gameRepository';
 import type { Game } from '@/domain/types';
 import { BackHeader } from '@/app/BackHeader';
 import { useNavigation } from '@/app/navigation/useNavigation';
+import {
+  usePlayCelebration,
+  type PlayCelebration,
+} from '@/app/PlayCelebration';
 import { loadGameSheet, toHistoryRow, type GameSheet } from './gameData';
 import styles from './GameDetail.module.css';
 
@@ -52,9 +57,11 @@ function metaLine(game: Game): string | null {
 
 export function GameDetail({ gameId }: GameDetailProps) {
   const { push, pop, resetToRoot } = useNavigation();
+  const { consume } = usePlayCelebration();
   const [sheet, setSheet] = useState<GameSheet | null | undefined>(undefined);
   const [menuOpen, setMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [celebration, setCelebration] = useState<PlayCelebration | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -65,6 +72,11 @@ export function GameDetail({ gameId }: GameDetailProps) {
       active = false;
     };
   }, [gameId]);
+
+  useEffect(() => {
+    const c = consume(gameId);
+    if (c) setCelebration(c);
+  }, [consume, gameId]);
 
   // Reachability guard: the game may have been deleted from under us.
   if (sheet === null) {
@@ -83,9 +95,16 @@ export function GameDetail({ gameId }: GameDetailProps) {
     resetToRoot();
   }
 
-  // Adding a play is Brique 7; the CTA's destination is wired there. For now
-  // it is an inert affordance (the screen is read-only).
-  function addPlay() {}
+  function addPlay() {
+    push({
+      kind: 'play-form',
+      mode: 'create',
+      gameId,
+      origin: 'game',
+      id: gameId,
+      depth: 2,
+    });
+  }
 
   const hasPlays = sheet ? sheet.stats.playCount > 0 : false;
 
@@ -166,7 +185,9 @@ export function GameDetail({ gameId }: GameDetailProps) {
           {!hasPlays ? (
             <div className={styles.empty}>
               <DiceMotif />
-              <h2 className={styles.emptyTitle}>Aucune partie pour l’instant</h2>
+              <h2 className={styles.emptyTitle}>
+                Aucune partie pour l’instant
+              </h2>
               <p className={styles.emptyCopy}>
                 Consignes ta première soirée. Le record et le classement des
                 joueurs apparaîtront ici.
@@ -241,7 +262,21 @@ export function GameDetail({ gameId }: GameDetailProps) {
                     const row = toHistoryRow(entry, sheet.type);
                     return (
                       <li key={entry.playId}>
-                        <HistoryRow day={day} month={month} {...row} />
+                        <HistoryRow
+                          day={day}
+                          month={month}
+                          {...row}
+                          onClick={() =>
+                            push({
+                              kind: 'play-form',
+                              mode: 'edit',
+                              playId: entry.playId,
+                              origin: 'game',
+                              id: entry.playId,
+                              depth: 2,
+                            })
+                          }
+                        />
                       </li>
                     );
                   })}
@@ -261,6 +296,16 @@ export function GameDetail({ gameId }: GameDetailProps) {
         onAction={confirmDelete}
         onCancel={() => setConfirmOpen(false)}
       />
+
+      {celebration ? (
+        <Toast
+          name={celebration.holderName}
+          avatarColor={avatarColorForName(celebration.holderName)}
+          headline={`Nouveau record, ${celebration.holderName}`}
+          subline={`Partie enregistrée · ${celebration.score} pts`}
+          className={styles.toast}
+        />
+      ) : null}
     </div>
   );
 }

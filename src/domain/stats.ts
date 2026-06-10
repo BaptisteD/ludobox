@@ -249,6 +249,37 @@ export function playerHistory(
   });
 }
 
+/** The celebrated record when a save beats it (competitive only). */
+export interface RecordCelebration {
+  holderName: string;
+  score: number;
+}
+
+/**
+ * Judges whether a just-saved competitive play breaks the game's record.
+ * `priorRecordScore` is the highest score across every *other* play (and, on an
+ * edit, the play's own previous scores) — so a beaten record is always held by
+ * someone inside `savedParticipants`. Returns the new holder + score, or null
+ * when no entered score strictly exceeds the prior record. Pure.
+ */
+export function recordCelebration(
+  savedParticipants: { name: string; score: number | null }[],
+  priorRecordScore: number | null,
+): RecordCelebration | null {
+  const scored = savedParticipants.filter(
+    (p): p is { name: string; score: number } => p.score !== null,
+  );
+  if (scored.length === 0) return null;
+  const thisMax = Math.max(...scored.map((p) => p.score));
+  if (priorRecordScore !== null && thisMax <= priorRecordScore) return null;
+  const holder = scored
+    .filter((p) => p.score === thisMax)
+    .sort((a, b) =>
+      a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' }),
+    )[0];
+  return { holderName: holder.name, score: thisMax };
+}
+
 /**
  * A game's chronological history (fiche jeu §8.5): one entry per play of the
  * game, newest first. Each entry joins the play's participations with player

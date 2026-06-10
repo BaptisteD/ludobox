@@ -5,6 +5,7 @@ import {
   gameHistory,
   playerHistory,
   playerStats,
+  recordCelebration,
   sortPlaysForHistory,
 } from './stats';
 import type { Game, Participation, Play, Player } from './types';
@@ -267,9 +268,27 @@ describe('gameHistory', () => {
       (e) => e.playId === 'g1',
     );
     expect(g1Entry?.participants).toEqual([
-      { playerId: 'alice', name: 'Alice', score: 8, isWinner: true, isArchived: false },
-      { playerId: 'carol', name: 'Carol', score: 8, isWinner: true, isArchived: true },
-      { playerId: 'bob', name: 'Bob', score: 5, isWinner: false, isArchived: false },
+      {
+        playerId: 'alice',
+        name: 'Alice',
+        score: 8,
+        isWinner: true,
+        isArchived: false,
+      },
+      {
+        playerId: 'carol',
+        name: 'Carol',
+        score: 8,
+        isWinner: true,
+        isArchived: true,
+      },
+      {
+        playerId: 'bob',
+        name: 'Bob',
+        score: 5,
+        isWinner: false,
+        isArchived: false,
+      },
     ]);
   });
 
@@ -277,7 +296,9 @@ describe('gameHistory', () => {
     const g2Entry = gameHistory(catan, plays, participations, players).find(
       (e) => e.playId === 'g2',
     );
-    expect(g2Entry?.participants.find((p) => p.name === 'Alice')?.score).toBeNull();
+    expect(
+      g2Entry?.participants.find((p) => p.name === 'Alice')?.score,
+    ).toBeNull();
   });
 
   it('flags the presence of a note', () => {
@@ -328,5 +349,50 @@ describe('sortPlaysForHistory', () => {
     const copy = [...input];
     sortPlaysForHistory(input);
     expect(input).toEqual(copy);
+  });
+});
+
+describe('recordCelebration', () => {
+  it('celebrates when the play introduces a strictly higher score', () => {
+    expect(
+      recordCelebration(
+        [
+          { name: 'Camille', score: 142 },
+          { name: 'Léa', score: 118 },
+        ],
+        96,
+      ),
+    ).toEqual({ holderName: 'Camille', score: 142 });
+  });
+
+  it('returns null when no entered score beats the prior record', () => {
+    expect(recordCelebration([{ name: 'Léa', score: 90 }], 142)).toBeNull();
+  });
+
+  it('returns null on an equal score (strictly greater is required)', () => {
+    expect(recordCelebration([{ name: 'Léa', score: 142 }], 142)).toBeNull();
+  });
+
+  it('celebrates the first record when there was none before (null prior)', () => {
+    expect(recordCelebration([{ name: 'Sol', score: 0 }], null)).toEqual({
+      holderName: 'Sol',
+      score: 0,
+    });
+  });
+
+  it('returns null when no participant entered a score', () => {
+    expect(recordCelebration([{ name: 'Bo', score: null }], null)).toBeNull();
+  });
+
+  it('breaks an in-play tie for the top score by name (fr, accent-insensitive)', () => {
+    expect(
+      recordCelebration(
+        [
+          { name: 'Élodie', score: 200 },
+          { name: 'Adam', score: 200 },
+        ],
+        10,
+      ),
+    ).toEqual({ holderName: 'Adam', score: 200 });
   });
 });

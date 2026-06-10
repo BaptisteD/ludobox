@@ -6,9 +6,9 @@ import '@/styles/tokens.css';
 import '@/styles/global.css';
 
 if (import.meta.env.DEV) {
-  // Test seam for Playwright fixtures: until Brique 7 ships the add-play form,
-  // the Fiche jeu E2E seeds plays straight through the repos. Dev-only, so the
-  // production bundle never carries it.
+  // Test seam for Playwright fixtures: the e2e specs seed games/players/plays
+  // straight through the repos to set up read screens and edit/delete scenarios.
+  // Dev-only, so the production bundle never carries it.
   void Promise.all([
     import('@/db/gameRepository'),
     import('@/db/playerRepository'),

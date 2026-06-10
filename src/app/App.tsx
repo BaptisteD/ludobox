@@ -8,6 +8,7 @@
  */
 import { AppShell } from './AppShell';
 import { NavigationProvider } from './navigation/NavigationProvider';
+import { PlayCelebrationProvider } from './PlayCelebration';
 import { Gallery } from '@/ui/gallery/Gallery';
 
 export default function App() {
@@ -16,7 +17,9 @@ export default function App() {
   }
   return (
     <NavigationProvider>
-      <AppShell />
+      <PlayCelebrationProvider>
+        <AppShell />
+      </PlayCelebrationProvider>
     </NavigationProvider>
   );
 }

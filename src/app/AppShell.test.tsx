@@ -6,11 +6,14 @@ import { gameRepository } from '@/db/gameRepository';
 import { playerRepository } from '@/db/playerRepository';
 import { AppShell } from './AppShell';
 import { NavigationProvider } from './navigation/NavigationProvider';
+import { PlayCelebrationProvider } from './PlayCelebration';
 
 function renderShell() {
   return render(
     <NavigationProvider>
-      <AppShell />
+      <PlayCelebrationProvider>
+        <AppShell />
+      </PlayCelebrationProvider>
     </NavigationProvider>,
   );
 }
@@ -151,5 +154,43 @@ describe('AppShell — Collection journey', () => {
         screen.getByRole('button', { name: 'Azul Maître, 0 partie' }),
       ).toBeInTheDocument(),
     );
+  });
+});
+
+describe('AppShell — play-form journey', () => {
+  it('logs a competitive play from the CTA and returns with updated history', async () => {
+    await gameRepository.create({ name: 'Catan', type: 'competitive' });
+    await playerRepository.create({ name: 'Léa' });
+    const user = userEvent.setup();
+    renderShell();
+
+    await user.click(
+      await screen.findByRole('button', { name: 'Catan, 0 partie' }),
+    );
+    await user.click(
+      screen.getByRole('button', { name: /ajouter une partie/i }),
+    );
+
+    await screen.findByText('Nouvelle partie');
+    await user.type(screen.getByLabelText('Ajouter un joueur'), 'Lé');
+    await user.click(
+      await screen.findByRole('option', { name: /Léa/ }, { timeout: 5000 }),
+    );
+    await user.type(screen.getByLabelText(/Score de Léa/), '99');
+    await user.click(screen.getByRole('switch', { name: /Léa a gagné/ }));
+    await user.click(
+      screen.getByRole('button', { name: 'Enregistrer la partie' }),
+    );
+
+    // The save pops the form, GameDetail remounts and consumes the celebration;
+    // give that async chain headroom so the assertion never flakes under load.
+    expect(
+      await screen.findByText('Nouveau record, Léa', undefined, {
+        timeout: 5000,
+      }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByTestId('history', undefined, { timeout: 5000 }),
+    ).toHaveTextContent('Léa');
   });
 });

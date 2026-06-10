@@ -193,3 +193,12 @@
   font-size: var(--type-body-size);
   color: var(--ink-muted);
 }
+
+.toast {
+  position: fixed;
+  left: 20px;
+  right: 20px;
+  bottom: 24px;
+  z-index: 20;
+  pointer-events: none;
+}

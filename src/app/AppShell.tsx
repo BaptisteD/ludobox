@@ -12,6 +12,7 @@ import type { Screen } from './navigation/types';
 import { CollectionScreen, GameForm } from '@/features/collection';
 import { GameDetail } from '@/features/game';
 import { PlayerDetail, PlayersScreen } from '@/features/players';
+import { PlayForm } from '@/features/play-form';
 import { PlaceholderDetail } from './screens/PlaceholderDetail';
 import styles from './AppShell.module.css';
 
@@ -24,6 +25,8 @@ function renderDetail(screen: Screen) {
       return <GameForm mode={screen.mode} gameId={screen.gameId} />;
     case 'player-detail':
       return <PlayerDetail playerId={screen.id} />;
+    case 'play-form':
+      return <PlayForm screen={screen} />;
     case 'placeholder-detail':
       return <PlaceholderDetail screen={screen} />;
   }

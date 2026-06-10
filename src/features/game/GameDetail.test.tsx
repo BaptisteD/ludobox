@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -7,6 +8,10 @@ import { playerRepository } from '@/db/playerRepository';
 import { playRepository } from '@/db/playRepository';
 import type { Game } from '@/domain/types';
 import { NavigationProvider } from '@/app/navigation/NavigationProvider';
+import {
+  PlayCelebrationProvider,
+  usePlayCelebration,
+} from '@/app/PlayCelebration';
 import { GameDetail } from './GameDetail';
 
 beforeEach(async () => {
@@ -138,7 +143,9 @@ describe('GameDetail — game actions', () => {
     await user.click(
       await screen.findByRole('button', { name: 'Options du jeu' }),
     );
-    await user.click(screen.getByRole('menuitem', { name: 'Supprimer le jeu' }));
+    await user.click(
+      screen.getByRole('menuitem', { name: 'Supprimer le jeu' }),
+    );
     await user.click(screen.getByRole('button', { name: 'Supprimer le jeu' }));
 
     await waitFor(async () =>
@@ -155,5 +162,40 @@ describe('GameDetail — game actions', () => {
     expect(
       await screen.findByText(/n’est plus disponible/i),
     ).toBeInTheDocument();
+  });
+});
+
+describe('GameDetail — celebration toast', () => {
+  it('shows the record toast when a celebration is pending for the game', async () => {
+    const g = await gameRepository.create({
+      name: 'Catan',
+      type: 'competitive',
+    });
+    const lea = await playerRepository.create({ name: 'Léa' });
+    await playRepository.create({
+      gameId: g.id,
+      participations: [{ playerId: lea.id, isWinner: true, score: 142 }],
+    });
+
+    function Harness() {
+      const { publish } = usePlayCelebration();
+      const [ready, setReady] = useState(false);
+      useEffect(() => {
+        publish({ gameId: g.id, holderName: 'Léa', score: 142 });
+        setReady(true);
+      }, [publish]);
+      return ready ? <GameDetail gameId={g.id} /> : null;
+    }
+
+    render(
+      <NavigationProvider>
+        <PlayCelebrationProvider>
+          <Harness />
+        </PlayCelebrationProvider>
+      </NavigationProvider>,
+    );
+
+    expect(await screen.findByText('Nouveau record, Léa')).toBeInTheDocument();
+    expect(screen.getByText(/142 pts/)).toBeInTheDocument();
   });
 });

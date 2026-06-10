@@ -16,7 +16,11 @@ import {
   useRef,
   type ReactNode,
 } from 'react';
-import { NavigationContext, type NavigationApi } from './NavigationContext';
+import {
+  NavigationContext,
+  type NavigationApi,
+  type BackGuard,
+} from './NavigationContext';
 import { initialNavState, navReducer } from './navReducer';
 import type { Screen, Tab } from './types';
 
@@ -31,13 +35,27 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
   const depthRef = useRef(state.stack.length);
   depthRef.current = state.stack.length;
 
+  const guardRef = useRef<BackGuard | null>(null);
+
   useEffect(() => {
     // Anchor the root entry at depth 0 so the first back lands here.
     window.history.replaceState(
       { navDepth: 0 } satisfies HistoryEntryState,
       '',
     );
-    const onPopState = () => dispatch({ type: 'POP' });
+    const onPopState = () => {
+      const guard = guardRef.current;
+      if (guard && guard.shouldBlock()) {
+        // Cancel the back: re-anchor a history entry at the current depth.
+        window.history.pushState(
+          { navDepth: depthRef.current } satisfies HistoryEntryState,
+          '',
+        );
+        guard.onBlocked();
+        return;
+      }
+      dispatch({ type: 'POP' });
+    };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
@@ -66,7 +84,21 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
     if (depth > 0) window.history.go(-depth);
   }, []);
 
-  const api: NavigationApi = { state, push, pop, selectTab, resetToRoot };
+  const registerBackGuard = useCallback((guard: BackGuard) => {
+    guardRef.current = guard;
+    return () => {
+      if (guardRef.current === guard) guardRef.current = null;
+    };
+  }, []);
+
+  const api: NavigationApi = {
+    state,
+    push,
+    pop,
+    selectTab,
+    resetToRoot,
+    registerBackGuard,
+  };
   return (
     <NavigationContext.Provider value={api}>
       {children}

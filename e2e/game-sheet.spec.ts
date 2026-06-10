@@ -15,7 +15,6 @@ async function ready(page: Page) {
 /** Runs a seeding function in the page against the repo seam, then reloads. */
 async function seed<T>(page: Page, fn: string): Promise<T> {
   const result = (await page.evaluate(async (src) => {
-    // eslint-disable-next-line no-new-func
     const run = new Function(`return (${src})(window.__ludobox)`);
     return await run();
   }, fn)) as T;

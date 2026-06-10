@@ -7,6 +7,13 @@
 import { createContext } from 'react';
 import type { NavState, Screen, Tab } from './types';
 
+/** A guard the play-form registers to intercept back navigation while dirty. */
+export interface BackGuard {
+  /** True ⇒ block the back and call onBlocked instead of popping. */
+  shouldBlock: () => boolean;
+  onBlocked: () => void;
+}
+
 export interface NavigationApi {
   state: NavState;
   /** Open a detail over the current tab's first level. */
@@ -17,6 +24,8 @@ export interface NavigationApi {
   selectTab: (tab: Tab) => void;
   /** Drop the whole stack — return from a deleted/archived object. */
   resetToRoot: () => void;
+  /** Register a back guard. Returns an unregister fn. Only one guard at a time. */
+  registerBackGuard: (guard: BackGuard) => () => void;
 }
 
 export const NavigationContext = createContext<NavigationApi | null>(null);

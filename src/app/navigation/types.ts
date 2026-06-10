@@ -9,6 +9,9 @@
 /** A first-level destination — one of the two bottom-bar entries. */
 export type Tab = 'collection' | 'joueurs';
 
+/** Where a play-form was opened from — decides whether the win toast shows. */
+export type PlayFormOrigin = 'game' | 'player';
+
 /**
  * A detail screen stacked over the current tab's first level. Brique 3 added the
  * placeholder kind to exercise the mechanics; briques 4–7 add the real kinds
@@ -27,7 +30,23 @@ export type Screen =
       id: string;
       depth: number;
     }
-  | { kind: 'player-detail'; id: string; depth: number };
+  | { kind: 'player-detail'; id: string; depth: number }
+  | {
+      kind: 'play-form';
+      mode: 'create';
+      gameId: string;
+      origin: PlayFormOrigin;
+      id: string;
+      depth: number;
+    }
+  | {
+      kind: 'play-form';
+      mode: 'edit';
+      playId: string;
+      origin: PlayFormOrigin;
+      id: string;
+      depth: number;
+    };
 
 export interface NavState {
   /** The active first-level destination. */

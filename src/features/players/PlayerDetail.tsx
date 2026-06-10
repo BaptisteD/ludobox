@@ -47,7 +47,7 @@ function resultOf(entry: PlayerSheet['history'][number]): ResultKind {
 }
 
 export function PlayerDetail({ playerId }: PlayerDetailProps) {
-  const { pop, resetToRoot } = useNavigation();
+  const { push, pop, resetToRoot } = useNavigation();
   const [sheet, setSheet] = useState<PlayerSheet | null | undefined>(undefined);
   const [reloadNonce, setReloadNonce] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -204,6 +204,16 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
                             ? 'unset'
                             : entry.score
                           : undefined
+                      }
+                      onClick={() =>
+                        push({
+                          kind: 'play-form',
+                          mode: 'edit',
+                          playId: entry.playId,
+                          origin: 'player',
+                          id: entry.playId,
+                          depth: 2,
+                        })
                       }
                     />
                   </li>
