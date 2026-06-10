@@ -5,15 +5,21 @@
  */
 import { db as defaultDb, LudoboxDB } from './db';
 import type { Player } from '@/domain/types';
-import { assertValid, checkPlayerNameAvailable } from '@/domain/validation';
+import {
+  assertValid,
+  checkPlayerNameAvailable,
+  validatePlayerDraft,
+} from '@/domain/validation';
 
 export function createPlayerRepository(db: LudoboxDB = defaultDb) {
   async function create(input: { name: string }): Promise<Player> {
+    const name = input.name.trim();
+    assertValid(validatePlayerDraft(name));
     const existing = await db.players.toArray();
-    assertValid(checkPlayerNameAvailable(input.name, existing));
+    assertValid(checkPlayerNameAvailable(name, existing));
     const player: Player = {
       id: crypto.randomUUID(),
-      name: input.name,
+      name,
       status: 'active',
     };
     await db.players.add(player);
@@ -35,9 +41,11 @@ export function createPlayerRepository(db: LudoboxDB = defaultDb) {
   async function rename(id: string, name: string): Promise<Player> {
     const current = await db.players.get(id);
     if (!current) throw new Error(`Player ${id} not found.`);
+    const trimmed = name.trim();
+    assertValid(validatePlayerDraft(trimmed));
     const existing = await db.players.toArray();
-    assertValid(checkPlayerNameAvailable(name, existing, { excludeId: id }));
-    const updated: Player = { ...current, name };
+    assertValid(checkPlayerNameAvailable(trimmed, existing, { excludeId: id }));
+    const updated: Player = { ...current, name: trimmed };
     await db.players.put(updated);
     return updated;
   }

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   competitiveGameStats,
   cooperativeGameStats,
+  playerHistory,
   playerStats,
   sortPlaysForHistory,
 } from './stats';
@@ -133,6 +134,78 @@ describe('playerStats', () => {
 
   it('counts wins only from competitive games (coop successes excluded)', () => {
     expect(playerStats(alice, plays, participations, games).winCount).toBe(1);
+  });
+});
+
+describe('playerHistory', () => {
+  const games = [catan, pandemic];
+  const comp = play({
+    id: 'comp',
+    gameId: catan.id,
+    playedAt: new Date('2026-03-10'),
+    createdAt: new Date('2026-03-10T10:00:00Z'),
+  });
+  const coopOk = play({
+    id: 'coopOk',
+    gameId: pandemic.id,
+    coopResult: 'success',
+    playedAt: new Date('2026-03-12'),
+    createdAt: new Date('2026-03-12T10:00:00Z'),
+  });
+  const compNoScore = play({
+    id: 'noscore',
+    gameId: catan.id,
+    playedAt: new Date('2026-03-08'),
+    createdAt: new Date('2026-03-08T10:00:00Z'),
+  });
+  const plays = [comp, coopOk, compNoScore];
+  const participations = [
+    part({ playId: 'comp', playerId: alice.id, isWinner: true, score: 42 }),
+    part({ playId: 'coopOk', playerId: alice.id }),
+    part({
+      playId: 'noscore',
+      playerId: alice.id,
+      isWinner: false,
+      score: null,
+    }),
+    // Bob's participation must never leak into Alice's history.
+    part({ playId: 'comp', playerId: bob.id, isWinner: false, score: 5 }),
+  ];
+
+  it('returns only the player’s own plays, newest first', () => {
+    const history = playerHistory(alice, plays, participations, games);
+    expect(history.map((e) => e.playId)).toEqual(['coopOk', 'comp', 'noscore']);
+  });
+
+  it('carries the competitive score and win flag', () => {
+    const [, comp] = playerHistory(alice, plays, participations, games);
+    expect(comp).toMatchObject({
+      gameName: 'Catan',
+      gameType: 'competitive',
+      isWinner: true,
+      score: 42,
+    });
+  });
+
+  it('keeps null score for an unentered competitive participation', () => {
+    const entry = playerHistory(alice, plays, participations, games).find(
+      (e) => e.playId === 'noscore',
+    );
+    expect(entry?.score).toBeNull();
+  });
+
+  it('resolves coop result (defaulting absent to success) and never a winner', () => {
+    const [coop] = playerHistory(alice, plays, participations, games);
+    expect(coop).toMatchObject({
+      gameType: 'cooperative',
+      coopResult: 'success',
+      isWinner: false,
+      score: null,
+    });
+  });
+
+  it('is empty for a player with no participations', () => {
+    expect(playerHistory(bob, [coopOk], participations, games)).toEqual([]);
   });
 });
 

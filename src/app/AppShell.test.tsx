@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { db } from '@/db/db';
 import { gameRepository } from '@/db/gameRepository';
+import { playerRepository } from '@/db/playerRepository';
 import { AppShell } from './AppShell';
 import { NavigationProvider } from './navigation/NavigationProvider';
 
@@ -49,18 +50,21 @@ describe('AppShell — shell & tabs', () => {
     );
   });
 
-  it('opens a placeholder detail from Joueurs and pops back (generic stack)', async () => {
+  it('opens a player fiche from Joueurs and pops back (generic stack)', async () => {
+    await playerRepository.create({ name: 'Mona' });
     const user = userEvent.setup();
     renderShell();
     await user.click(screen.getByRole('button', { name: /Joueurs/ }));
 
-    await user.click(screen.getByRole('button', { name: 'Ouvrir un détail' }));
-    expect(screen.getByTestId('detail')).toBeInTheDocument();
+    await user.click(
+      await screen.findByRole('button', { name: 'Mona, 0 partie' }),
+    );
+    expect(screen.getByTestId('player-detail')).toBeInTheDocument();
     expect(bottomBar()).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Retour' }));
     await waitFor(() => expect(bottomBar()).toBeInTheDocument());
-    expect(screen.queryByTestId('detail')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('player-detail')).not.toBeInTheDocument();
   });
 });
 

@@ -10,7 +10,7 @@ import { bottomBarVisible, isFirstLevel } from './navigation/navReducer';
 import { useNavigation } from './navigation/useNavigation';
 import type { Screen } from './navigation/types';
 import { CollectionScreen, GameDetail, GameForm } from '@/features/collection';
-import { JoueursScreen } from './screens/JoueursScreen';
+import { PlayerDetail, PlayersScreen } from '@/features/players';
 import { PlaceholderDetail } from './screens/PlaceholderDetail';
 import styles from './AppShell.module.css';
 
@@ -21,6 +21,8 @@ function renderDetail(screen: Screen) {
       return <GameDetail gameId={screen.id} />;
     case 'game-form':
       return <GameForm mode={screen.mode} gameId={screen.gameId} />;
+    case 'player-detail':
+      return <PlayerDetail playerId={screen.id} />;
     case 'placeholder-detail':
       return <PlaceholderDetail screen={screen} />;
   }
@@ -48,7 +50,7 @@ export function AppShell() {
           className={styles.layer}
           hidden={!atFirstLevel || state.tab !== 'joueurs'}
         >
-          <JoueursScreen
+          <PlayersScreen
             focusNonce={state.focusNonce.joueurs}
             scrollResetNonce={state.scrollResetNonce.joueurs}
           />

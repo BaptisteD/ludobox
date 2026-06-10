@@ -1,0 +1,105 @@
+.screen {
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-extrabold);
+  font-size: var(--type-game-title-size);
+  line-height: var(--type-game-title-lh);
+  letter-spacing: var(--type-game-title-tracking);
+  color: var(--ink-primary);
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.row {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--radius-cta);
+}
+
+.name {
+  flex: 1;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-bold);
+  font-size: 18px;
+  color: var(--ink-primary);
+}
+
+/* Fixed right-aligned count slot so every number shares a right edge and the
+   unit left-aligns down the column (DESIGN.md §Numerals). */
+.count {
+  flex-shrink: 0;
+  width: 72px;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+
+.countNum {
+  width: 26px;
+  text-align: right;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-extrabold);
+  font-size: 18px;
+  color: var(--ink-primary);
+}
+
+.countUnit {
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-medium);
+  font-size: var(--type-body-size);
+  color: var(--ink-muted);
+}
+
+.cta {
+  position: sticky;
+  bottom: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.empty {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-4);
+}
+
+.emptyHeadline {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-extrabold);
+  font-size: var(--type-empty-headline-size);
+  line-height: var(--type-empty-headline-lh);
+  color: var(--ink-primary);
+}
+
+.emptyCopy {
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-medium);
+  font-size: var(--type-body-size);
+  color: var(--ink-muted);
+  max-width: 26ch;
+}

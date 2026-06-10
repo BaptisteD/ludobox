@@ -9,6 +9,16 @@ import { expect, test } from '@playwright/test';
 const bottomBar = (page: import('@playwright/test').Page) =>
   page.getByRole('navigation', { name: 'Navigation principale' });
 
+/** Creates a player from the Joueurs space via the create sheet. */
+async function addPlayer(page: import('@playwright/test').Page, name: string) {
+  await page.getByRole('button', { name: 'Ajouter un joueur' }).click();
+  await page.getByLabel('Nom du joueur').fill(name);
+  await page
+    .getByRole('dialog', { name: 'Ajouter un joueur' })
+    .getByRole('button', { name: 'Ajouter' })
+    .click();
+}
+
 test('launches on Collection with the bottom bar', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle('Ludobox');
@@ -36,19 +46,20 @@ test('toggles between Collection and Joueurs', async ({ page }) => {
 
 test('dives into a detail and pops one cran back', async ({ page }) => {
   await page.goto('/');
-  // The generic placeholder stack lives on the Joueurs tab (Brique 5 fills it).
+  // The stack mechanics are exercised through the real Joueurs fiche.
   await bottomBar(page)
     .getByRole('button', { name: /Joueurs/ })
     .click();
-  await page.getByRole('button', { name: 'Ouvrir un détail' }).click();
+  await addPlayer(page, 'Mona');
+  await page.getByRole('button', { name: 'Mona, 0 partie' }).click();
 
-  await expect(page.getByTestId('detail')).toBeVisible();
+  await expect(page.getByTestId('player-detail')).toBeVisible();
   await expect(bottomBar(page)).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Retour' })).toBeVisible();
 
   await page.getByRole('button', { name: 'Retour' }).click();
   await expect(bottomBar(page)).toBeVisible();
-  await expect(page.getByTestId('detail')).toHaveCount(0);
+  await expect(page.getByTestId('player-detail')).toHaveCount(0);
 });
 
 test('the browser back gesture pops one cran (Android system back proxy)', async ({
@@ -58,20 +69,26 @@ test('the browser back gesture pops one cran (Android system back proxy)', async
   await bottomBar(page)
     .getByRole('button', { name: /Joueurs/ })
     .click();
-  await page.getByRole('button', { name: 'Ouvrir un détail' }).click();
-  await expect(page.getByTestId('detail')).toBeVisible();
+  await addPlayer(page, 'Mona');
+  await page.getByRole('button', { name: 'Mona, 0 partie' }).click();
+  await expect(page.getByTestId('player-detail')).toBeVisible();
 
   await page.goBack();
   await expect(bottomBar(page)).toBeVisible();
-  await expect(page.getByTestId('detail')).toHaveCount(0);
+  await expect(page.getByTestId('player-detail')).toHaveCount(0);
 });
 
 test('re-tapping the active tab scrolls its list to top', async ({ page }) => {
+  // A short viewport so a handful of player rows overflow the list container.
+  await page.setViewportSize({ width: 390, height: 360 });
   await page.goto('/');
-  // Use Joueurs: its placeholder still renders a long, scrollable filler list.
   await bottomBar(page)
     .getByRole('button', { name: /Joueurs/ })
     .click();
+  for (const name of ['Alice', 'Bob', 'Chloé', 'David', 'Emma', 'Farid']) {
+    await addPlayer(page, name);
+  }
+
   const list = page.getByTestId('screen-joueurs');
   await list.evaluate((el) => el.scrollTo({ top: 400 }));
   await expect

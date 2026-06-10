@@ -9,7 +9,14 @@
  * Archived players still count everywhere their real plays appear (record,
  * ranking, history); they only drop out of active lists, handled in the UI.
  */
-import type { Game, Participation, Play, Player } from './types';
+import type {
+  CoopResult,
+  Game,
+  GameType,
+  Participation,
+  Play,
+  Player,
+} from './types';
 
 export interface GameRecord {
   score: number;
@@ -41,6 +48,23 @@ export interface CooperativeGameStats {
 export interface PlayerStats {
   playCount: number;
   winCount: number;
+}
+
+/**
+ * One line of a player's cross-game history. UI-free: the rendering layer maps
+ * `gameType` + `isWinner`/`coopResult` to the right chip (Victoire/Défaite vs
+ * Succès/Échec) and decides how to show the score. `score` is the player's own
+ * participation score (competitive only); `null` means not entered, and it is
+ * always `null` for cooperative plays (no individual score exists in coop).
+ */
+export interface PlayerHistoryEntry {
+  playId: string;
+  playedAt: Date;
+  gameName: string;
+  gameType: GameType;
+  isWinner: boolean;
+  coopResult: CoopResult;
+  score: number | null;
 }
 
 const namesById = (players: Player[]): Map<string, string> =>
@@ -159,4 +183,43 @@ export function sortPlaysForHistory(plays: Play[]): Play[] {
       b.playedAt.getTime() - a.playedAt.getTime() ||
       b.createdAt.getTime() - a.createdAt.getTime(),
   );
+}
+
+/**
+ * A player's cross-game history (fiche joueur §8.3/§8.4): one entry per play the
+ * player took part in, newest first. Each entry joins the player's own
+ * participation with its play and game, resolving coop result to its default
+ * ('success' when absent, per the Play type). Pure — computed at read time.
+ */
+export function playerHistory(
+  player: Player,
+  plays: Play[],
+  participations: Participation[],
+  games: Game[],
+): PlayerHistoryEntry[] {
+  const gameById = new Map(games.map((game) => [game.id, game]));
+  const partByPlay = new Map(
+    participations
+      .filter((part) => part.playerId === player.id)
+      .map((part) => [part.playId, part]),
+  );
+
+  return sortPlaysForHistory(
+    plays.filter((play) => partByPlay.has(play.id)),
+  ).flatMap((play) => {
+    const game = gameById.get(play.gameId);
+    const part = partByPlay.get(play.id);
+    if (!game || !part) return [];
+    return [
+      {
+        playId: play.id,
+        playedAt: play.playedAt,
+        gameName: game.name,
+        gameType: game.type,
+        isWinner: part.isWinner,
+        coopResult: play.coopResult ?? 'success',
+        score: part.score,
+      },
+    ];
+  });
 }

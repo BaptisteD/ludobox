@@ -21,6 +21,17 @@ describe('playerRepository', () => {
     expect(p.status).toBe('active');
   });
 
+  it('rejects an empty or whitespace-only name', async () => {
+    await expect(players.create({ name: '   ' })).rejects.toMatchObject({
+      code: 'EMPTY_PLAYER_NAME',
+    });
+  });
+
+  it('trims leading/trailing spaces from the stored name', async () => {
+    const p = await players.create({ name: '  Alice  ' });
+    expect(p.name).toBe('Alice');
+  });
+
   it('rejects a name matching an active player', async () => {
     await players.create({ name: 'Alice' });
     await expect(players.create({ name: 'alice' })).rejects.toMatchObject({

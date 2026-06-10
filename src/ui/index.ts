@@ -5,6 +5,7 @@
 export * from './icons';
 
 export { Avatar, type AvatarColor, type AvatarProps } from './Avatar';
+export { avatarColorForName } from './avatarColor';
 export { Tag, type GameType, type TagProps } from './Tag';
 export {
   ResultChip,

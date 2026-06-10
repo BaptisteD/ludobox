@@ -8,6 +8,7 @@ import {
   DomainError,
   validateGameDraft,
   validatePlay,
+  validatePlayerDraft,
 } from './validation';
 
 const game = (over: Partial<Game> = {}): Game => ({
@@ -295,6 +296,17 @@ describe('validateGameDraft', () => {
       validateGameDraft({ name: 'Catan', type: 'competitive', durationMin: 45 })
         .ok,
     ).toBe(true);
+  });
+});
+
+describe('validatePlayerDraft', () => {
+  it('accepts a non-empty name', () => {
+    expect(validatePlayerDraft('Alice').ok).toBe(true);
+  });
+
+  it('rejects an empty or whitespace-only name', () => {
+    const result = validatePlayerDraft('   ');
+    expect(result).toMatchObject({ ok: false, code: 'EMPTY_PLAYER_NAME' });
   });
 });
 

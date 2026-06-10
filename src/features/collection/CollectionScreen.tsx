@@ -7,7 +7,7 @@
  * project invariant: never stored).
  */
 import { useEffect, useRef, useState } from 'react';
-import { Avatar, Button, DiceMotif, Plus, type AvatarColor } from '@/ui';
+import { Avatar, avatarColorForName, Button, DiceMotif, Plus } from '@/ui';
 import { useNavigation } from '@/app/navigation/useNavigation';
 import { loadCollection, type GameEntry } from './collectionData';
 import styles from './CollectionScreen.module.css';
@@ -15,14 +15,6 @@ import styles from './CollectionScreen.module.css';
 export interface CollectionScreenProps {
   focusNonce: number;
   scrollResetNonce: number;
-}
-
-const AVATAR_COLORS: AvatarColor[] = ['coral', 'teal', 'ink'];
-
-/** Stable placeholder color from the name, so a game keeps its hue across reads. */
-function colorFor(name: string): AvatarColor {
-  const sum = [...name].reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  return AVATAR_COLORS[sum % AVATAR_COLORS.length];
 }
 
 export function CollectionScreen({
@@ -88,7 +80,7 @@ export function CollectionScreen({
                   >
                     <Avatar
                       name={game.name}
-                      color={colorFor(game.name)}
+                      color={avatarColorForName(game.name)}
                       size={48}
                     />
                     <span className={styles.name}>{game.name}</span>

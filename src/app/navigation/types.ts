@@ -26,7 +26,8 @@ export type Screen =
       gameId?: string;
       id: string;
       depth: number;
-    };
+    }
+  | { kind: 'player-detail'; id: string; depth: number };
 
 export interface NavState {
   /** The active first-level destination. */

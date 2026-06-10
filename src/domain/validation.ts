@@ -18,6 +18,7 @@ import type {
 export type ValidationErrorCode =
   | 'DUPLICATE_GAME_NAME'
   | 'DUPLICATE_PLAYER_NAME'
+  | 'EMPTY_PLAYER_NAME'
   | 'GAME_TYPE_LOCKED'
   | 'EMPTY_GAME_NAME'
   | 'MISSING_GAME_TYPE'
@@ -144,6 +145,19 @@ export function validateGameDraft(draft: GameDraft): ValidationResult {
       'INVALID_DURATION',
       'Duration must be a positive whole number.',
     );
+  }
+  return ok;
+}
+
+/**
+ * Validates a player form draft (shared by standalone creation and inline
+ * rename), per the formulaire-joueur spec §8.1: a non-empty name after trimming.
+ * Name uniqueness among active players is a separate, data-dependent check
+ * ({@link checkPlayerNameAvailable}).
+ */
+export function validatePlayerDraft(name: string): ValidationResult {
+  if (name.trim().length === 0) {
+    return fail('EMPTY_PLAYER_NAME', 'A player needs a name.');
   }
   return ok;
 }

@@ -42,7 +42,8 @@
       "Bash(npm run *)",
       "Bash(npm install *)",
       "Bash(md5 -r baloo2-700-latin.woff2 baloo2-800-latin.woff2 hanken-500-latin.woff2 hanken-700-latin.woff2 hanken-800-latin.woff2)",
-      "Bash(md5 -r baloo2-700-latin-ext.woff2 baloo2-800-latin-ext.woff2 hanken-500-latin-ext.woff2 hanken-700-latin-ext.woff2 hanken-800-latin-ext.woff2)"
+      "Bash(md5 -r baloo2-700-latin-ext.woff2 baloo2-800-latin-ext.woff2 hanken-500-latin-ext.woff2 hanken-700-latin-ext.woff2 hanken-800-latin-ext.woff2)",
+      "Bash(awk '{print $3}')"
     ]
   }
 }

@@ -19,7 +19,21 @@ export function createParticipationRepository(db: LudoboxDB = defaultDb) {
     return db.participations.toArray();
   }
 
-  return { listByPlay, listByPlayer, getAll };
+  /**
+   * Read-time count of plays per player (never stored). A player takes part in a
+   * play at most once, so their participation count equals their distinct play
+   * count (fiche joueur §8.1). Players with no plays are absent from the map.
+   */
+  async function countByPlayer(): Promise<Map<string, number>> {
+    const all = await db.participations.toArray();
+    const counts = new Map<string, number>();
+    for (const part of all) {
+      counts.set(part.playerId, (counts.get(part.playerId) ?? 0) + 1);
+    }
+    return counts;
+  }
+
+  return { listByPlay, listByPlayer, getAll, countByPlayer };
 }
 
 export const participationRepository = createParticipationRepository();
