@@ -1,5 +1,7 @@
 # Ludobox
 
+**En ligne :** https://ludobox-baptisteds-projects-54146a9b.vercel.app
+
 Journal personnel de parties de jeux de société. PWA **mobile-first** (390px),
 **hors-ligne**, **sans compte**, données locales à l'appareil.
 
