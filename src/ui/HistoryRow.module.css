@@ -41,15 +41,22 @@
   color: var(--ink-muted);
 }
 
+/* `flex: 1 1 auto` (not the old `flex: 1`, i.e. basis 0%) so the title column
+   keeps a real width and competes with the result column — basis 0% let the
+   result's natural width win everything and collapsed this to ~10px. */
 .main {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
 }
 
 .title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-family: var(--font-display);
   font-weight: var(--weight-display-bold);
   font-size: 17px;
@@ -57,16 +64,59 @@
 }
 
 .meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-family: var(--font-text);
   font-weight: var(--weight-text-medium);
   font-size: var(--type-body-size);
   color: var(--ink-muted);
 }
 
-.result {
-  display: inline-flex;
+/* ── Fiche joueur layout: game name on top, chip + score stacked below ──
+   (maquette 2I6-0). The name takes the full row width, so the chip never
+   competes with it for space. */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.resultLine {
+  display: flex;
   align-items: center;
   gap: var(--space-2);
+  min-width: 0;
+}
+
+/* "142 pts": gold number + faint unit, baseline-aligned. */
+.points {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  flex-shrink: 0;
+}
+
+.pts {
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-medium);
+  font-size: var(--type-body-size);
+  color: var(--ink-muted);
+}
+
+/* ── Fiche jeu layout: trophy + winner(s) + score inline, meta line below ──
+   (maquette 7X7-0 / SA-0). Only the title yields; the trophy, chip and score
+   keep their size. */
+.headline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.headline > *:not(.title) {
   flex-shrink: 0;
 }
 
@@ -83,6 +133,10 @@
 }
 
 .scoreUnset {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-family: var(--font-text);
   font-style: italic;
   font-size: var(--type-body-size);

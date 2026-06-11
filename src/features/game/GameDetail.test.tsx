@@ -114,6 +114,25 @@ describe('GameDetail — cooperative', () => {
   });
 });
 
+describe('GameDetail — hero counter', () => {
+  it('uses the singular play label for a single play', async () => {
+    const catan = await gameRepository.create({
+      name: 'Catan',
+      type: 'competitive',
+    });
+    const camille = await playerRepository.create({ name: 'Camille' });
+    await playRepository.create({
+      gameId: catan.id,
+      participations: [{ playerId: camille.id, isWinner: true, score: 10 }],
+    });
+
+    renderDetail(catan);
+
+    expect(await screen.findByText('partie jouée')).toBeInTheDocument();
+    expect(screen.queryByText('parties jouées')).not.toBeInTheDocument();
+  });
+});
+
 describe('GameDetail — empty state', () => {
   it('shows the dice motif and the add-play CTA when the game has no play', async () => {
     const wingspan = await gameRepository.create({

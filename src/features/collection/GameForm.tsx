@@ -6,7 +6,7 @@
  * codes to French copy. No image field in V1.
  */
 import { useEffect, useState } from 'react';
-import { Button } from '@/ui';
+import { Button, CancelLink } from '@/ui';
 import { Check, DieGlyph } from '@/ui/icons';
 import { gameRepository, type NewGame } from '@/db/gameRepository';
 import { playRepository } from '@/db/playRepository';
@@ -80,17 +80,21 @@ export function GameForm({ mode, gameId }: GameFormProps) {
     };
   }, [mode, gameId]);
 
-  async function handleSave() {
-    const draft: GameDraft = {
-      name,
-      type,
-      minPlayers: parseOptionalNumber(minPlayers),
-      maxPlayers: parseOptionalNumber(maxPlayers),
-      durationMin: parseOptionalNumber(durationMin),
-    };
+  const draft: GameDraft = {
+    name,
+    type,
+    minPlayers: parseOptionalNumber(minPlayers),
+    maxPlayers: parseOptionalNumber(maxPlayers),
+    durationMin: parseOptionalNumber(durationMin),
+  };
+  // Dormant CTA until the draft is structurally valid — same gate as PlayForm,
+  // derived from the pure domain rule (no duplicated logic). Name uniqueness is
+  // a separate, data-dependent check left to handleSave.
+  const structuralValidity = validateGameDraft(draft);
 
-    const structural = validateGameDraft(draft);
-    if (!structural.ok) return setError(gameErrorMessage(structural.code));
+  async function handleSave() {
+    if (!structuralValidity.ok)
+      return setError(gameErrorMessage(structuralValidity.code));
 
     const unique = checkGameNameAvailable(draft.name, allGames, {
       excludeId: gameId,
@@ -198,11 +202,10 @@ export function GameForm({ mode, gameId }: GameFormProps) {
           <Button
             label={mode === 'create' ? 'Créer le jeu' : 'Enregistrer'}
             icon={<Check size={22} />}
+            disabled={!structuralValidity.ok}
             onClick={handleSave}
           />
-          <button type="button" className={styles.cancel} onClick={pop}>
-            Annuler
-          </button>
+          <CancelLink onClick={pop} />
         </div>
       </div>
     </div>

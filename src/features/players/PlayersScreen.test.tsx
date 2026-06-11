@@ -49,6 +49,25 @@ describe('PlayersScreen', () => {
     expect(screen.queryByText('Ghost')).not.toBeInTheDocument();
   });
 
+  it('shows a plural count subtitle of active players', async () => {
+    await playerRepository.create({ name: 'Alice' });
+    await playerRepository.create({ name: 'Bob' });
+    renderScreen();
+    expect(await screen.findByText('2 joueurs actifs')).toBeInTheDocument();
+  });
+
+  it('uses singular agreement in the subtitle for a single player', async () => {
+    await playerRepository.create({ name: 'Alice' });
+    renderScreen();
+    expect(await screen.findByText('1 joueur actif')).toBeInTheDocument();
+  });
+
+  it('hides the count subtitle in the empty state', async () => {
+    renderScreen();
+    expect(await screen.findByText(/aucun joueur/i)).toBeInTheDocument();
+    expect(screen.queryByText(/joueur actif/)).toBeNull();
+  });
+
   it('creates a player through the sheet; it appears in the list', async () => {
     const user = userEvent.setup();
     renderScreen();

@@ -38,25 +38,28 @@ describe('GameForm — create', () => {
     });
   });
 
-  it('blocks an empty name with a clear message and writes nothing', async () => {
+  it('keeps the CTA dormant while the name is empty, writing nothing', async () => {
     const user = userEvent.setup();
     renderForm({ mode: 'create' });
 
-    await user.click(screen.getByRole('radio', { name: 'Compétitif' }));
-    await user.click(screen.getByRole('button', { name: 'Créer le jeu' }));
+    const cta = screen.getByRole('button', { name: 'Créer le jeu' });
+    expect(cta).toBeDisabled();
 
-    expect(await screen.findByText('Un nom est requis.')).toBeInTheDocument();
+    await user.click(screen.getByRole('radio', { name: 'Compétitif' }));
+    expect(cta).toBeDisabled(); // a type alone is not enough — name still empty
     expect(await gameRepository.getAll()).toHaveLength(0);
   });
 
-  it('blocks when no type is chosen', async () => {
+  it('keeps the CTA dormant until a type is chosen, then wakes it', async () => {
     const user = userEvent.setup();
     renderForm({ mode: 'create' });
 
     await user.type(screen.getByLabelText('Nom du jeu'), 'Catan');
-    await user.click(screen.getByRole('button', { name: 'Créer le jeu' }));
+    const cta = screen.getByRole('button', { name: 'Créer le jeu' });
+    expect(cta).toBeDisabled();
 
-    expect(await screen.findByText('Choisis un type.')).toBeInTheDocument();
+    await user.click(screen.getByRole('radio', { name: 'Compétitif' }));
+    expect(cta).toBeEnabled();
   });
 
   it('refuses a duplicate name ignoring case and accents', async () => {
@@ -74,7 +77,7 @@ describe('GameForm — create', () => {
     expect(await gameRepository.getAll()).toHaveLength(1);
   });
 
-  it('blocks min greater than max', async () => {
+  it('keeps the CTA dormant when min exceeds max', async () => {
     const user = userEvent.setup();
     renderForm({ mode: 'create' });
 
@@ -82,11 +85,8 @@ describe('GameForm — create', () => {
     await user.click(screen.getByRole('radio', { name: 'Compétitif' }));
     await user.type(screen.getByLabelText('Joueurs min'), '5');
     await user.type(screen.getByLabelText('Joueurs max'), '2');
-    await user.click(screen.getByRole('button', { name: 'Créer le jeu' }));
 
-    expect(
-      await screen.findByText('Le minimum ne peut pas dépasser le maximum.'),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Créer le jeu' })).toBeDisabled();
   });
 });
 

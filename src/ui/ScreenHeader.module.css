@@ -1,0 +1,21 @@
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-extrabold);
+  font-size: var(--type-game-title-size);
+  line-height: var(--type-game-title-lh);
+  letter-spacing: var(--type-game-title-tracking);
+  color: var(--ink-primary);
+}
+
+.subtitle {
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-medium);
+  font-size: var(--type-body-size);
+  color: var(--ink-muted);
+}

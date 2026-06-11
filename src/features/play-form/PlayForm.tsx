@@ -14,6 +14,7 @@ import {
   avatarColorForName,
   BottomSheet,
   Button,
+  CancelLink,
   Check,
   Cross,
   InlineValidityHint,
@@ -37,6 +38,7 @@ import { usePlayCelebration } from '@/app/PlayCelebration';
 import type { Screen } from '@/app/navigation/types';
 import {
   emptyDraft,
+  formatLongDate,
   fromDateInputValue,
   isDirty,
   playDraftReducer,
@@ -294,6 +296,13 @@ export function PlayForm({ screen }: PlayFormProps) {
           <span className={styles.label}>Date</span>
           <div className={styles.dateField}>
             <Calendar size={20} aria-hidden="true" />
+            {/* Long readable date shown over a transparent native input that
+                still captures the tap and opens the picker (maquette). Decorative:
+                the input below already carries the accessible "Date" label and
+                value, so hide this from assistive tech to avoid a double read. */}
+            <span className={styles.dateValue} aria-hidden="true">
+              {formatLongDate(draft.playedAt)}
+            </span>
             <input
               type="date"
               aria-label="Date"
@@ -419,6 +428,9 @@ export function PlayForm({ screen }: PlayFormProps) {
             disabled={!validity.ok}
             onClick={handleSave}
           />
+          {/* Quiet secondary escape — routes through the same back chokepoint as
+              the arrow, so the unsaved-changes guard still fires (US9). */}
+          <CancelLink onClick={requestBack} />
         </div>
       </div>
 

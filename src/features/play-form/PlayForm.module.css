@@ -94,6 +94,7 @@
 }
 
 .dateField {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -105,14 +106,31 @@
   color: var(--ink-primary);
 }
 
-.dateInput {
+.dateField:focus-within {
+  outline: 2px solid var(--ink-primary);
+  outline-offset: 2px;
+}
+
+.dateValue {
   flex: 1;
-  border: none;
-  background: transparent;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 17px;
   color: var(--ink-primary);
+}
+
+/* Transparent native input overlaying the whole field: it captures the tap and
+   owns the picker, while the readable long date shows beneath it. */
+.dateInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: none;
+  background: transparent;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .dateInput:focus {
@@ -186,6 +204,10 @@
 
 .cta {
   margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
 }
 
 .unavailable {
