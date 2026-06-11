@@ -7,24 +7,56 @@
   max-width: var(--screen-width);
   padding: var(--space-3) var(--space-4);
   color: var(--ink-primary);
-  animation: toast-in 240ms ease-out both;
+}
+
+/* Bounce up from below the screen — enters tilted (the record signature),
+ * straightening to flat as it settles for easier reading. */
+.toast[data-phase='enter'] {
+  animation: toast-in 540ms cubic-bezier(0.18, 1.1, 0.32, 1) both;
+}
+
+/* Re-tilts and slides back down off through the bottom. */
+.toast[data-phase='leave'] {
+  animation: toast-out 340ms cubic-bezier(0.4, 0, 1, 1) both;
 }
 
 @keyframes toast-in {
-  from {
+  0% {
     opacity: 0;
-    transform: translateY(16px) rotate(var(--tilt-record));
+    transform: translateY(calc(100% + 48px)) rotate(var(--tilt-record));
   }
-  to {
+  55% {
     opacity: 1;
-    transform: translateY(0) rotate(var(--tilt-record));
+    transform: translateY(-14px) rotate(var(--tilt-record));
+  }
+  73% {
+    transform: translateY(6px) rotate(calc(var(--tilt-record) * 0.4));
+  }
+  88% {
+    transform: translateY(-3px) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
   }
 }
 
-/* Degrade to an instant appearance (DESIGN.md §Motion). */
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(calc(100% + 48px)) rotate(var(--tilt-record));
+  }
+}
+
+/* Degrade to an instant appearance/disappearance (DESIGN.md §Motion). */
 @media (prefers-reduced-motion: reduce) {
-  .toast {
-    animation: none;
+  .toast[data-phase='enter'],
+  .toast[data-phase='leave'] {
+    animation-duration: 1ms;
   }
 }
 

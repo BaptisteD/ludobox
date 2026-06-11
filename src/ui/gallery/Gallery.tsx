@@ -197,6 +197,7 @@ export function Gallery() {
             name="Camille"
             headline="Nouveau record, Camille"
             subline="Partie enregistrée · 142 pts"
+            duration={2147483647}
           />
         </div>
       </Section>

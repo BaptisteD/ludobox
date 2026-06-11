@@ -310,6 +310,7 @@ export function GameDetail({ gameId }: GameDetailProps) {
           avatarColor={avatarColorForName(celebration.holderName)}
           headline={`Nouveau record, ${celebration.holderName}`}
           subline={`Partie enregistrée · ${celebration.score} pts`}
+          onDismiss={() => setCelebration(null)}
           className={styles.toast}
         />
       ) : null}
