@@ -39,10 +39,16 @@
 
 /* ---- Composite bases ---- */
 
-/* A round game piece: avatars, rank badges, status discs. */
+/* A round game piece: player avatars, rank badges, status discs. */
 .pieceBase {
   composes: outlineMid shadowPiece;
   border-radius: var(--radius-round);
+}
+
+/* A square game tile: collection game avatars (thin outline, soft shadow). */
+.tileBase {
+  composes: outlineThin shadowSoft;
+  border-radius: var(--radius-chip);
 }
 
 /* The one tilted gold feature card (record / success-rate). */
