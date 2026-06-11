@@ -18,7 +18,7 @@
   /* ---- Color · game-piece roles ---- */
   --coral: #c43355; /* primary CTA, "Compétitif", failure, rank-3, destructive — AA on crème */
   --gold: #f4b53c; /* record card surface, rank-1 badge */
-  --gold-ink: #7a5200; /* score numbers in history (on cream) — ≥4.5:1 on all cream surfaces */
+  --gold-ink: #8a5e00; /* score numbers in history (on cream) — ≥4.5:1 on all cream surfaces, keeps gold hue */
   --gold-trophy: #e1a11f; /* trophy icon in history rows */
   --gold-on-gold: #5c3d00; /* muted text on the gold record card — ≥4.5:1 on gold */
   --teal: #147d71; /* "Coopératif", success, rank-2, win portion of bars — AA on crème */

@@ -34,7 +34,7 @@ Hex as authored in the file.
 |---|---|---|
 | `coral` | `#C43355` | Primary CTA (Add a play), "Compétitif" tag, failure, rank-3 badge, destructive |
 | `gold` | `#F4B53C` | Record card surface, rank-1 badge |
-| `gold/ink` | `#7A5200` | Score numbers in history (on cream) |
+| `gold/ink` | `#8A5E00` | Score numbers in history (on cream) |
 | `gold/trophy` | `#E1A11F` | Trophy icon in history rows |
 | `gold/on-gold` | `#5C3D00` | Muted text on the gold record card ("pts", subline) |
 | `teal` | `#147D71` | "Coopératif" tag, success, rank-2 badge, win portion of bars |

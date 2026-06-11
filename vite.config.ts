@@ -19,7 +19,7 @@ export default defineConfig({
         short_name: 'Ludobox',
         description: 'Journal personnel de parties de jeux de société.',
         lang: 'fr',
-        theme_color: '#E14B6A',
+        theme_color: '#C43355',
         background_color: '#FDF3E3',
         display: 'standalone',
         orientation: 'portrait',
