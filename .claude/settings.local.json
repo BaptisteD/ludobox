@@ -44,7 +44,23 @@
       "Bash(md5 -r baloo2-700-latin.woff2 baloo2-800-latin.woff2 hanken-500-latin.woff2 hanken-700-latin.woff2 hanken-800-latin.woff2)",
       "Bash(md5 -r baloo2-700-latin-ext.woff2 baloo2-800-latin-ext.woff2 hanken-500-latin-ext.woff2 hanken-700-latin-ext.woff2 hanken-800-latin-ext.woff2)",
       "Bash(awk '{print $3}')",
-      "Read(//Users/baptiste/.claude/skills/impeccable/reference/**)"
+      "Read(//Users/baptiste/.claude/skills/impeccable/reference/**)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(npm test *)",
+      "Bash(npx prettier *)",
+      "Bash(git -C /Users/baptiste/Documents/DEV/Ludobox add src/domain/stats.ts src/domain/stats.test.ts)",
+      "Bash(git -C /Users/baptiste/Documents/DEV/Ludobox commit -m ' *)",
+      "Bash(git commit *)",
+      "Bash(npx eslint *)",
+      "Bash(git -C /Users/baptiste/Documents/DEV/Ludobox add src/features/play-form/playDraft.ts src/features/play-form/playDraft.test.ts)",
+      "Bash(node -e ' *)",
+      "Bash(git -C /Users/baptiste/Documents/DEV/Ludobox add src/features/play-form/playFormData.ts src/features/play-form/playFormData.test.ts)",
+      "Bash(git -C /Users/baptiste/Documents/DEV/Ludobox add src/features/play-form/playFormMessages.ts src/features/play-form/playFormMessages.test.ts)",
+      "Bash(cp src/features/play-form/playFormData.ts /tmp/before.ts)",
+      "Read(//tmp/**)",
+      "Bash(xxd)",
+      "Bash(git stash *)"
     ]
   }
 }
