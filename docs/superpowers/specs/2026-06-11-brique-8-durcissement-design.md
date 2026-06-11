@@ -36,19 +36,24 @@ Ratios de contraste calculés (formule WCAG, sRGB) :
   **améliore** tout texte crème-sur-couleur et ne dégrade aucune autre paire (les contours/ombres
   restent `ink-primary`). Stratégie retenue : assombrir les tokens globaux (2 valeurs), **pas** de
   shades `-deep` parallèles (éviter deux corals côte à côte).
-- **Chevron** : nouveau token dédié `--chevron-disclosure` atteignant ≥3:1 sur crème (≈ `#9c8a6a`,
-  à confirmer au calcul à l'implémentation), appliqué à `HistoryRow .chevron`. Le `ink-faint` faible
+- **Chevron** : nouveau token dédié `--chevron-disclosure: #988568` (crème = **3.24**, ≥3:1),
+  appliqué à `HistoryRow .chevron`. Le `ink-faint` faible
   reste pour les usages réellement décoratifs / désactivés (exemptés).
 - **Synchroniser** `DESIGN.md` (valeurs hex coral/teal + note chevron) et les commentaires de
   `tokens.css` avec les nouvelles valeurs.
 
 ### 2. Sémantique des titres (un seul `<h1>` par écran)
 
-`BackHeader` rend `<h1>{title}</h1>` avec `title=""` sur les 3 écrans de détail
-(`GameDetail`, `PlayForm`, `PlayerDetail`), qui possèdent déjà leur propre `<h1>` héro → deux `<h1>`
-dont un vide. Correction : retirer le `<h1>` de `BackHeader` (il devient un `<header>` landmark +
-bouton retour `aria-label="Retour"`). Le `<h1>` héro devient l'unique titre de page. Supprimer la
-prop `title` morte et son plumbing dans les 3 appelants + la gallery + les tests concernés.
+`BackHeader` rend toujours `<h1>{title}</h1>`. Deux familles d'appelants :
+- **Sans `<h1>` propre** (`GameForm` `title={title}`, `PlayerDetail` `title={name}`,
+  `PlaceholderDetail`) — le `<h1>` de `BackHeader` EST leur titre de page. À conserver.
+- **Avec `<h1>` héro propre** (`GameDetail` ligne ~159, `PlayForm` ligne ~289) qui passent `title=""` :
+  ils obtiennent **deux `<h1>` dont un vide**. C'est le bug.
+
+Correction : `BackHeader` ne rend le `<h1>` **que si `title` est non vide** ; sinon il n'émet aucun
+titre (le `<header>` landmark + bouton retour `aria-label="Retour"` restent). Ainsi chaque écran a
+exactement **un** `<h1>` : via `BackHeader` pour GameForm/PlayerDetail/PlaceholderDetail, via le héro
+pour GameDetail/PlayForm. La prop `title` est conservée (toujours utilisée).
 
 ### 3. Robustesse hors-ligne
 
