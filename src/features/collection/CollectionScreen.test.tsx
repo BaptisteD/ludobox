@@ -58,6 +58,51 @@ describe('CollectionScreen', () => {
     ]);
   });
 
+  it('shows a count subtitle aggregating games and total plays', async () => {
+    const catan = await gameRepository.create({
+      name: 'Catan',
+      type: 'competitive',
+    });
+    await gameRepository.create({ name: 'Azul', type: 'competitive' });
+    await playRepository.create({
+      gameId: catan.id,
+      participations: [{ playerId: 'a', isWinner: true }],
+    });
+    await playRepository.create({
+      gameId: catan.id,
+      participations: [{ playerId: 'b', isWinner: true }],
+    });
+
+    renderScreen();
+
+    expect(
+      await screen.findByText('2 jeux · 2 parties consignées'),
+    ).toBeInTheDocument();
+  });
+
+  it('uses singular agreement in the subtitle for one game and one play', async () => {
+    const catan = await gameRepository.create({
+      name: 'Catan',
+      type: 'competitive',
+    });
+    await playRepository.create({
+      gameId: catan.id,
+      participations: [{ playerId: 'a', isWinner: true }],
+    });
+
+    renderScreen();
+
+    expect(
+      await screen.findByText('1 jeu · 1 partie consignée'),
+    ).toBeInTheDocument();
+  });
+
+  it('hides the count subtitle in the empty state', async () => {
+    renderScreen();
+    expect(await screen.findByText(/aucun jeu/i)).toBeInTheDocument();
+    expect(screen.queryByText(/consignée/)).toBeNull();
+  });
+
   it('recomputes the list when the focus nonce bumps (return from a mutation)', async () => {
     const { rerender } = renderScreen(0);
     expect(await screen.findByText(/aucun jeu/i)).toBeInTheDocument();

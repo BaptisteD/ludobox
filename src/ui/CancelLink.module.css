@@ -1,0 +1,13 @@
+.cancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: none;
+  background: none;
+  font-family: var(--font-text);
+  font-weight: var(--weight-text-bold);
+  font-size: 15px;
+  color: var(--ink-muted);
+  cursor: pointer;
+}

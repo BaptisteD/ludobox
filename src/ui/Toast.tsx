@@ -5,10 +5,13 @@
  * winner's avatar with a small cream crown badge. Right: a Baloo headline over
  * a gold/on-gold subline with an ink check.
  *
- * Animated entrance normally; degrades to an instant appearance under
- * prefers-reduced-motion (handled in the stylesheet — the component renders
- * identically either way). Announced politely to assistive tech.
+ * Lifecycle: bounces up from below the screen, holds for `duration`, then slides
+ * back down through the bottom and calls `onDismiss` so the host can unmount it.
+ * Degrades to an instant appearance/disappearance under prefers-reduced-motion
+ * (handled in the stylesheet — the component renders identically either way).
+ * Announced politely to assistive tech.
  */
+import { useEffect, useState } from 'react';
 import { Check, CrownFilled } from './icons';
 import { Avatar, type AvatarColor } from './Avatar';
 import styles from './Toast.module.css';
@@ -21,6 +24,10 @@ export interface ToastProps {
   headline: string;
   /** The "saved" half, e.g. "Partie enregistrée · 142 pts". */
   subline: string;
+  /** Visible time before the toast slides back out, in ms. */
+  duration?: number;
+  /** Called once the leave animation has finished — host should unmount. */
+  onDismiss?: () => void;
   className?: string;
 }
 
@@ -29,12 +36,25 @@ export function Toast({
   avatarColor = 'coral',
   headline,
   subline,
+  duration = 4200,
+  onDismiss,
   className,
 }: ToastProps) {
+  const [leaving, setLeaving] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLeaving(true), duration);
+    return () => clearTimeout(timer);
+  }, [duration]);
+
   return (
     <div
       role="status"
       aria-live="polite"
+      data-phase={leaving ? 'leave' : 'enter'}
+      onAnimationEnd={() => {
+        if (leaving) onDismiss?.();
+      }}
       className={[styles.toast, className].filter(Boolean).join(' ')}
     >
       <span className={styles.avatar}>

@@ -7,7 +7,15 @@
  * project invariant: never stored).
  */
 import { useEffect, useRef, useState } from 'react';
-import { Avatar, avatarColorForName, Button, DiceMotif, Plus } from '@/ui';
+import {
+  Avatar,
+  avatarColorForName,
+  Button,
+  DiceMotif,
+  plural,
+  Plus,
+  ScreenHeader,
+} from '@/ui';
 import { useNavigation } from '@/app/navigation/useNavigation';
 import { loadCollection, type GameEntry } from './collectionData';
 import styles from './CollectionScreen.module.css';
@@ -46,13 +54,26 @@ export function CollectionScreen({
 
   const isEmpty = entries !== null && entries.length === 0;
 
+  // Read-time count subtitle (the invariant: never stored) — total plays summed
+  // from the per-game counts already loaded. Built only when there are games to
+  // count; omitted in the loading/empty states.
+  let subtitle: string | undefined;
+  if (entries && entries.length > 0) {
+    const playTotal = entries.reduce((sum, e) => sum + e.playCount, 0);
+    subtitle = `${entries.length} ${plural(entries.length, 'jeu', 'jeux')} · ${playTotal} ${plural(
+      playTotal,
+      'partie consignée',
+      'parties consignées',
+    )}`;
+  }
+
   return (
     <div
       ref={scrollRef}
       className={styles.screen}
       data-testid="screen-collection"
     >
-      <h1 className={styles.title}>Collection</h1>
+      <ScreenHeader title="Collection" subtitle={subtitle} />
 
       {isEmpty ? (
         <div className={styles.empty}>
@@ -65,9 +86,17 @@ export function CollectionScreen({
         </div>
       ) : (
         <>
+          <div className={styles.cta}>
+            <Button
+              label="Ajouter un jeu"
+              icon={<Plus />}
+              onClick={openCreate}
+            />
+          </div>
+
           <ul className={styles.list}>
             {(entries ?? []).map(({ game, playCount }) => {
-              const unit = playCount <= 1 ? 'partie' : 'parties';
+              const unit = plural(playCount, 'partie', 'parties');
               return (
                 <li key={game.id}>
                   <button
@@ -93,14 +122,6 @@ export function CollectionScreen({
               );
             })}
           </ul>
-
-          <div className={styles.cta}>
-            <Button
-              label="Ajouter un jeu"
-              icon={<Plus />}
-              onClick={openCreate}
-            />
-          </div>
         </>
       )}
     </div>

@@ -37,10 +37,25 @@
   z-index: 1;
 }
 
+/* Identity masthead: avatar + display name side by side, left-aligned
+   (maquette « Fiche joueur · Tabletop pop »). Carries the page's <h1>. */
 .identity {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-4);
   padding: 0 var(--space-5);
+}
+
+.identityName {
+  margin: 0;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-extrabold);
+  font-size: var(--type-game-title-size);
+  line-height: var(--type-game-title-lh);
+  letter-spacing: var(--type-game-title-tracking);
+  color: var(--ink-primary);
 }
 
 .stats {

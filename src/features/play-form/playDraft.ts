@@ -150,3 +150,21 @@ export function fromDateInputValue(value: string): Date {
   const [y, m, d] = value.split('-').map(Number);
   return new Date(y, m - 1, d);
 }
+
+/** Built once and reused — constructing an Intl formatter per call is wasteful. */
+const longDateFr = new Intl.DateTimeFormat('fr-FR', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+/**
+ * Local Date → long French date for display, e.g. "Samedi 24 mai 2025"
+ * (first letter capitalized). The native date input keeps the short locale
+ * format; this is the readable overlay shown over it (maquette « Partie »).
+ */
+export function formatLongDate(date: Date): string {
+  const s = longDateFr.format(date);
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}

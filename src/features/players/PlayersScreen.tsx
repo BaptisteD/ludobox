@@ -8,7 +8,15 @@
  * every focus (the project invariant: never stored).
  */
 import { useEffect, useRef, useState } from 'react';
-import { Avatar, avatarColorForName, Button, DiceMotif, Plus } from '@/ui';
+import {
+  Avatar,
+  avatarColorForName,
+  Button,
+  DiceMotif,
+  plural,
+  Plus,
+  ScreenHeader,
+} from '@/ui';
 import { useNavigation } from '@/app/navigation/useNavigation';
 import { AddPlayerSheet } from './AddPlayerSheet';
 import { loadPlayers, type PlayerEntry } from './playersData';
@@ -47,6 +55,12 @@ export function PlayersScreen({
 
   const isEmpty = entries !== null && entries.length === 0;
 
+  // Count subtitle, shown only when there are active players to count.
+  const subtitle =
+    entries && entries.length > 0
+      ? `${entries.length} ${plural(entries.length, 'joueur actif', 'joueurs actifs')}`
+      : undefined;
+
   function handleCreated() {
     setCreating(false);
     setReloadNonce((n) => n + 1);
@@ -54,7 +68,7 @@ export function PlayersScreen({
 
   return (
     <div ref={scrollRef} className={styles.screen} data-testid="screen-joueurs">
-      <h1 className={styles.title}>Joueurs</h1>
+      <ScreenHeader title="Joueurs" subtitle={subtitle} />
 
       {isEmpty ? (
         <div className={styles.empty}>
@@ -71,9 +85,17 @@ export function PlayersScreen({
         </div>
       ) : (
         <>
+          <div className={styles.cta}>
+            <Button
+              label="Ajouter un joueur"
+              icon={<Plus />}
+              onClick={() => setCreating(true)}
+            />
+          </div>
+
           <ul className={styles.list}>
             {(entries ?? []).map(({ player, playCount }) => {
-              const unit = playCount <= 1 ? 'partie' : 'parties';
+              const unit = plural(playCount, 'partie', 'parties');
               return (
                 <li key={player.id}>
                   <button
@@ -99,14 +121,6 @@ export function PlayersScreen({
               );
             })}
           </ul>
-
-          <div className={styles.cta}>
-            <Button
-              label="Ajouter un joueur"
-              icon={<Plus />}
-              onClick={() => setCreating(true)}
-            />
-          </div>
         </>
       )}
 

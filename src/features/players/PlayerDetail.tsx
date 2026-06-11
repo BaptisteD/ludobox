@@ -105,7 +105,10 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
   return (
     <div className={styles.detail} data-testid="player-detail">
       <div className={styles.header}>
-        <BackHeader title={name} onBack={pop} />
+        {/* The masthead carries the <h1> in the normal view; while renaming the
+            masthead is replaced by the form, so the back-header takes the <h1>
+            over — exactly one <h1> in either state. */}
+        <BackHeader title={renaming ? name : ''} onBack={pop} />
         <button
           type="button"
           className={styles.options}
@@ -167,9 +170,10 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
         </form>
       ) : (
         <>
-          <div className={styles.identity}>
+          <header className={styles.identity}>
             <Avatar name={name} color={avatarColorForName(name)} size={64} />
-          </div>
+            <h1 className={styles.identityName}>{name}</h1>
+          </header>
 
           <StatSummary
             played={sheet?.stats.playCount ?? 0}
@@ -192,12 +196,11 @@ export function PlayerDetail({ playerId }: PlayerDetailProps) {
                 return (
                   <li key={entry.playId}>
                     <HistoryRow
+                      variant="player"
                       day={day}
                       month={month}
                       title={entry.gameName}
-                      meta={isComp ? 'Compétitif' : 'Coopératif'}
                       result={resultOf(entry)}
-                      trophy={isComp && entry.isWinner}
                       score={
                         isComp
                           ? entry.score === null

@@ -5,6 +5,7 @@
  * explicit textual cue (never color alone), per formulaire-jeu §9 / US3.
  */
 import { Tag, type GameType as TagType } from '@/ui';
+import { Trophy, Users } from '@/ui/icons';
 import type { GameType } from '@/domain/types';
 import styles from './GameTypeField.module.css';
 
@@ -16,9 +17,14 @@ export interface GameTypeFieldProps {
   className?: string;
 }
 
-const OPTIONS: { value: GameType; label: string; tag: TagType }[] = [
-  { value: 'competitive', label: 'Compétitif', tag: 'competitif' },
-  { value: 'cooperative', label: 'Coopératif', tag: 'cooperatif' },
+const OPTIONS: {
+  value: GameType;
+  label: string;
+  tag: TagType;
+  Icon: typeof Trophy;
+}[] = [
+  { value: 'competitive', label: 'Compétitif', tag: 'competitif', Icon: Trophy },
+  { value: 'cooperative', label: 'Coopératif', tag: 'cooperatif', Icon: Users },
 ];
 
 export function GameTypeField({
@@ -63,6 +69,9 @@ export function GameTypeField({
                 .join(' ')}
               onClick={() => onChange(option.value)}
             >
+              <span className={styles.optionIcon}>
+                <option.Icon size={18} />
+              </span>
               {option.label}
             </button>
           );

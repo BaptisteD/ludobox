@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   emptyDraft,
+  formatLongDate,
   fromDateInputValue,
   isDirty,
   playDraftReducer,
@@ -163,5 +164,10 @@ describe('date input helpers', () => {
     expect(toDateInputValue(fromDateInputValue('2026-06-07'))).toBe(
       '2026-06-07',
     );
+  });
+
+  it('formats a long French date with a capitalized first letter', () => {
+    const d = new Date(2025, 4, 24); // 24 May 2025, local — a Saturday
+    expect(formatLongDate(d)).toBe('Samedi 24 mai 2025');
   });
 });

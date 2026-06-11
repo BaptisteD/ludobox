@@ -20,6 +20,7 @@ import {
   LeaderboardRow,
   OverflowMenu,
   Pencil,
+  plural,
   Plus,
   RecordCard,
   SuccessRateCard,
@@ -176,7 +177,13 @@ export function GameDetail({ gameId }: GameDetailProps) {
                       {sheet.stats.playCount}
                     </span>
                   </span>
-                  <span className={styles.countLabel}>parties jouées</span>
+                  <span className={styles.countLabel}>
+                    {plural(
+                      sheet.stats.playCount,
+                      'partie jouée',
+                      'parties jouées',
+                    )}
+                  </span>
                 </div>
               ) : null}
             </div>
@@ -303,6 +310,7 @@ export function GameDetail({ gameId }: GameDetailProps) {
           avatarColor={avatarColorForName(celebration.holderName)}
           headline={`Nouveau record, ${celebration.holderName}`}
           subline={`Partie enregistrée · ${celebration.score} pts`}
+          onDismiss={() => setCelebration(null)}
           className={styles.toast}
         />
       ) : null}

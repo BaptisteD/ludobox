@@ -1,6 +1,7 @@
 /**
  * Public surface of the Ludobox UI kit (Brique 2). Purely presentational
- * components — props in, pixels out. No data, logic, or navigation here.
+ * components — props in, pixels out. No data fetching, domain logic, or
+ * navigation here (small view-text helpers like plural/formatHistoryDate aside).
  */
 export * from './icons';
 
@@ -16,6 +17,7 @@ export { RankBadge, type RankBadgeProps } from './RankBadge';
 export { IconDisc, type DiscColor, type IconDiscProps } from './IconDisc';
 
 export { Button, type ButtonProps } from './Button';
+export { CancelLink, type CancelLinkProps } from './CancelLink';
 export { WinnerToggle, type WinnerToggleProps } from './WinnerToggle';
 export {
   SegmentedResult,
@@ -37,7 +39,9 @@ export { SuccessRateCard, type SuccessRateCardProps } from './SuccessRateCard';
 export { LeaderboardRow, type LeaderboardRowProps } from './LeaderboardRow';
 export { HistoryRow, type HistoryRowProps } from './HistoryRow';
 export { formatHistoryDate } from './formatHistoryDate';
+export { plural } from './plural';
 export { StatSummary, type StatSummaryProps } from './StatSummary';
+export { ScreenHeader, type ScreenHeaderProps } from './ScreenHeader';
 
 export { DiceMotif, type DiceMotifProps } from './DiceMotif';
 export { BottomSheet, type BottomSheetProps } from './BottomSheet';
