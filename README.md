@@ -30,6 +30,23 @@ npx playwright install chromium   # navigateur pour les tests E2E
 | `npm run lint`     | ESLint + vérification du formatage Prettier        |
 | `npm run format`   | Applique Prettier                                  |
 
+## PWA & hors-ligne
+
+Ludobox est une PWA installable qui fonctionne **entièrement hors-ligne** (données en
+IndexedDB, shell + polices précachés par le service worker).
+
+```bash
+npm run build      # build de production + service worker (Workbox)
+npm run preview    # sert le build prod sur http://localhost:4173
+```
+
+Pour vérifier l'installabilité et le hors-ligne :
+
+1. `npm run build && npm run preview`, ouvrir l'URL dans Chrome.
+2. Installer l'app (icône d'installation de la barre d'adresse) → elle se lance en **standalone**.
+3. Couper le réseau (DevTools → Network → Offline) puis recharger : l'app démarre, navigue,
+   lit et écrit. La navigation profonde retombe sur le shell (`navigateFallback`).
+
 ## Conventions de dossiers
 
 Alias d'import **`@/`** → `src/` (configuré dans `vite.config.ts` et

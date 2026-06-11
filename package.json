@@ -1,7 +1,7 @@
 {
   "name": "ludobox",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "Journal personnel de parties de jeux de société — PWA mobile-first, hors-ligne, sans compte.",
   "scripts": {
