@@ -26,7 +26,7 @@ Hex as authored in the file.
 | `surface/white` | `#FFFFFF` | Date chips, overflow-menu surface, rename input field |
 | `on-dark/cream` | `#FFF6E9` | Text/icons on coral, teal, ink |
 | `ink/primary` | `#2A2018` | Titles, body, all outlines and shadows |
-| `ink/muted` | `#7A6A56` | Meta, section labels, secondary text |
+| `ink/muted` | `#62533F` | Meta, section labels, secondary text |
 | `ink/faint` | `#C7B493` | Lowest-emphasis decoration & disabled (chevron uses `#988568` for AA) |
 
 ### Game-piece colors
@@ -34,9 +34,9 @@ Hex as authored in the file.
 |---|---|---|
 | `coral` | `#C43355` | Primary CTA (Add a play), "Compétitif" tag, failure, rank-3 badge, destructive |
 | `gold` | `#F4B53C` | Record card surface, rank-1 badge |
-| `gold/ink` | `#C98A1E` | Score numbers in history (on cream) |
+| `gold/ink` | `#7A5200` | Score numbers in history (on cream) |
 | `gold/trophy` | `#E1A11F` | Trophy icon in history rows |
-| `gold/on-gold` | `#7A4F1A` | Muted text on the gold record card ("pts", subline) |
+| `gold/on-gold` | `#5C3D00` | Muted text on the gold record card ("pts", subline) |
 | `teal` | `#147D71` | "Coopératif" tag, success, rank-2 badge, win portion of bars |
 
 > Coral/teal darkened in Brique 8 so 14px crème text on them clears WCAG AA 4.5:1 (was 3.62/3.02).
@@ -192,6 +192,6 @@ A twenty-first surface, the **Système de design** poster, lives on its own page
 
 - WCAG 2.1 AA. Touch targets ≥44px (hard constraint).
 - Never color alone for win/loss, game type, or rank: always paired with icon, number, or label (already true in the file).
-- Verify contrast for cream-on-color (`#FFF6E9` on coral/teal) and muted ink (`#7A6A56`, `#C7B493`) against cream; the faint chevron and 9px month label are the riskiest, check both at AA.
+- Verify contrast for cream-on-color (`#FFF6E9` on coral/teal) and muted ink (`#62533F`, `#C7B493`) against cream; the faint chevron and 9px month label are the riskiest, check both at AA.
 - Respect `prefers-reduced-motion`.
 - Archived players stay present by name in history/stats (the "archivé" tag); render readable, never as an error state.

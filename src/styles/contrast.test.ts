@@ -41,4 +41,22 @@ describe('token contrast (WCAG 2.1 AA)', () => {
   it('disclosure chevron clears 3:1 on cream', () => {
     expect(ratio(token('chevron-disclosure'), cream)).toBeGreaterThanOrEqual(3);
   });
+  it('gold-ink (history scores) clears 4.5:1 on cream', () => {
+    expect(ratio(token('gold-ink'), cream)).toBeGreaterThanOrEqual(4.5);
+  });
+  it('gold-ink clears 4.5:1 on raised cream (rank-1 row)', () => {
+    expect(
+      ratio(token('gold-ink'), token('bg-cream-raised')),
+    ).toBeGreaterThanOrEqual(4.5);
+  });
+  it('gold-on-gold clears 4.5:1 on the gold record card', () => {
+    expect(ratio(token('gold-on-gold'), token('gold'))).toBeGreaterThanOrEqual(
+      4.5,
+    );
+  });
+  it('ink-muted clears 4.5:1 on raised cream (its weakest surface)', () => {
+    expect(
+      ratio(token('ink-muted'), token('bg-cream-raised')),
+    ).toBeGreaterThanOrEqual(4.5);
+  });
 });
