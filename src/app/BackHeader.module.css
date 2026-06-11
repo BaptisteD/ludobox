@@ -1,27 +1,41 @@
 .header {
   display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5) 0;
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Plain chevron — no circle, no shadow — but a ≥44px tap area. Pulled to the
+   gutter so the glyph optically aligns with the title below it. */
 .back {
-  composes: outlineMid shadowSoft from '@/ui/styles/signature.module.css';
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
   flex-shrink: 0;
-  border-radius: var(--radius-round);
-  background: var(--bg-cream);
+  margin-inline-start: calc(-1 * var(--space-2));
+  border: none;
+  background: none;
   color: var(--ink-primary);
+}
+
+/* The shared Chevron points right (disclosure); a back cue points left. */
+.chevron {
+  transform: rotate(180deg);
 }
 
 .title {
   font-family: var(--font-display);
   font-weight: var(--weight-display-extrabold);
-  font-size: 22px;
-  line-height: 1.1;
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  line-height: 1.04;
   color: var(--ink-primary);
 }

@@ -3,10 +3,11 @@
  * "écran unique toujours éditable"). Validation is delegated to the domain
  * (`validateGameDraft` + `checkGameNameAvailable`, and the repository as the
  * final authority); this component only collects input and maps domain error
- * codes to French copy. No image field in V1 — the header is a placeholder.
+ * codes to French copy. No image field in V1.
  */
 import { useEffect, useState } from 'react';
 import { Button } from '@/ui';
+import { Check, DieGlyph } from '@/ui/icons';
 import { gameRepository, type NewGame } from '@/db/gameRepository';
 import { playRepository } from '@/db/playRepository';
 import type { Game, GameType } from '@/domain/types';
@@ -124,42 +125,68 @@ export function GameForm({ mode, gameId }: GameFormProps) {
     <div className={styles.form} data-testid="game-form">
       <BackHeader title={title} onBack={pop} />
       <div className={styles.body}>
-        <span className={styles.placeholder} aria-hidden="true" />
-
-        <TextField
-          label="Nom du jeu"
-          hideLabel={false}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          autoFocus={mode === 'create'}
-        />
+        <section className={styles.section}>
+          <span className={styles.label} aria-hidden="true">
+            Nom du jeu
+          </span>
+          <TextField
+            label="Nom du jeu"
+            hideLabel
+            leading={<DieGlyph size={22} />}
+            placeholder="Le nom du jeu"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            autoFocus={mode === 'create'}
+          />
+        </section>
 
         <GameTypeField value={type} onChange={setType} locked={typeLocked} />
 
-        <div className={styles.row}>
-          <TextField
-            label="Joueurs min"
-            hideLabel={false}
-            inputMode="numeric"
-            value={minPlayers}
-            onChange={(e) => setMinPlayers(e.target.value)}
-          />
-          <TextField
-            label="Joueurs max"
-            hideLabel={false}
-            inputMode="numeric"
-            value={maxPlayers}
-            onChange={(e) => setMaxPlayers(e.target.value)}
-          />
-        </div>
+        <section className={styles.section}>
+          <span className={styles.label} aria-hidden="true">
+            Joueurs <span className={styles.optional}>facultatif</span>
+          </span>
+          <div className={styles.inlineRow}>
+            <TextField
+              className={styles.numField}
+              label="Joueurs min"
+              hideLabel
+              inputMode="numeric"
+              style={{ textAlign: 'center' }}
+              value={minPlayers}
+              onChange={(e) => setMinPlayers(e.target.value)}
+            />
+            <span className={styles.connector}>à</span>
+            <TextField
+              className={styles.numField}
+              label="Joueurs max"
+              hideLabel
+              inputMode="numeric"
+              style={{ textAlign: 'center' }}
+              value={maxPlayers}
+              onChange={(e) => setMaxPlayers(e.target.value)}
+            />
+            <span className={styles.connector}>joueurs</span>
+          </div>
+        </section>
 
-        <TextField
-          label="Durée (min)"
-          hideLabel={false}
-          inputMode="numeric"
-          value={durationMin}
-          onChange={(e) => setDurationMin(e.target.value)}
-        />
+        <section className={styles.section}>
+          <span className={styles.label} aria-hidden="true">
+            Durée <span className={styles.optional}>facultatif</span>
+          </span>
+          <div className={styles.inlineRow}>
+            <TextField
+              className={styles.durationField}
+              label="Durée (min)"
+              hideLabel
+              inputMode="numeric"
+              style={{ textAlign: 'center' }}
+              value={durationMin}
+              onChange={(e) => setDurationMin(e.target.value)}
+            />
+            <span className={styles.connector}>minutes</span>
+          </div>
+        </section>
 
         {error ? (
           <p className={styles.error} role="alert">
@@ -167,11 +194,15 @@ export function GameForm({ mode, gameId }: GameFormProps) {
           </p>
         ) : null}
 
-        <div className={styles.cta}>
+        <div className={styles.saveBar}>
           <Button
             label={mode === 'create' ? 'Créer le jeu' : 'Enregistrer'}
+            icon={<Check size={22} />}
             onClick={handleSave}
           />
+          <button type="button" className={styles.cancel} onClick={pop}>
+            Annuler
+          </button>
         </div>
       </div>
     </div>
