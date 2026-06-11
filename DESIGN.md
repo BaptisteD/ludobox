@@ -12,7 +12,7 @@ The look is playful neo-brutalism in a board-game key: warm cream paper ground, 
 
 Light, always, warm. The ground is `#FDF3E3` cream, like a well-thumbed rulebook under a lamp after game night. No dark mode. Surfaces are distinguished by outline and shadow, not by elevation gradients.
 
-Color strategy: **full palette**, four named game-piece roles (coral, gold, teal, ink) each used for a specific job, anchored by coral as the single primary action color. Never pure black; pure white is reserved for a few crisp surfaces — date chips, the overflow menu, and the rename input.
+Color strategy: **full palette**, four named game-piece fill roles (coral, gold, teal, blue) each used for a specific job, anchored by coral as the single primary action color. `ink` is **not** a fill — it's the ink (every outline, every shadow, body text); filling a piece with it collapses the piece into its own outline + drop shadow and kills the elevation, so blue takes its place in the avatar rotation. Never pure black; pure white is reserved for a few crisp surfaces — date chips, the overflow menu, and the rename input.
 
 ## Color
 
@@ -38,8 +38,10 @@ Hex as authored in the file.
 | `gold/trophy` | `#E1A11F` | Trophy icon in history rows |
 | `gold/on-gold` | `#5C3D00` | Muted text on the gold record card ("pts", subline) |
 | `teal` | `#147D71` | "Coopératif" tag, success, rank-2 badge, win portion of bars |
+| `blue` | `#1F6F9E` | Avatar fill (players & games), 3rd rotation hue |
 
 > Coral/teal darkened in Brique 8 so 14px crème text on them clears WCAG AA 4.5:1 (was 3.62/3.02).
+> `blue` added so the dark avatar gets its elevation back: `ink` was retired from avatar fills because aplat = shadow color made the drop shadow vanish on crème. Its crème initial clears AA 4.5:1 (enforced by `contrast.test.ts`). Avatar rotation is now coral / teal / blue.
 
 ### Semantic
 - **Win** = `teal` chip with check icon + label (`Victoire` in competitive history, `Succès` in cooperative). **Loss** = `coral` chip with cross icon + label (`Défaite` competitive, `Échec` cooperative). Always icon + text, never color alone (PRODUCT.md a11y constraint).

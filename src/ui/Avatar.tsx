@@ -5,8 +5,13 @@
  */
 import styles from './Avatar.module.css';
 
-/** Avatar fills: gold is held back for win/record meaning, so it's excluded. */
-export type AvatarColor = 'coral' | 'teal' | 'ink';
+/**
+ * Avatar fills. Gold is held back for win/record meaning, so it's excluded.
+ * Ink is excluded too: it's the contour/shadow color, so an ink-filled piece
+ * collapses into its own outline + drop shadow and loses all elevation on crème.
+ * Blue is the third game-piece hue in its place.
+ */
+export type AvatarColor = 'coral' | 'teal' | 'blue';
 
 /** Round game piece (players) or square game tile (collection games). */
 export type AvatarShape = 'round' | 'square';

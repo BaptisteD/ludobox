@@ -47,7 +47,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 const PLAYERS = [
   { id: '1', name: 'Camille', color: 'coral' as const },
   { id: '2', name: 'Théo', color: 'teal' as const },
-  { id: '3', name: 'Inès', color: 'ink' as const },
+  { id: '3', name: 'Inès', color: 'blue' as const },
 ];
 
 export function Gallery() {
@@ -68,7 +68,7 @@ export function Gallery() {
       <Section title="01 · Avatar">
         <Avatar name="Camille" color="coral" />
         <Avatar name="Théo" color="teal" size={56} />
-        <Avatar name="Inès" color="ink" size={40} />
+        <Avatar name="Inès" color="blue" size={40} />
       </Section>
 
       <Section title="02 · Tag / ResultChip / RankBadge">

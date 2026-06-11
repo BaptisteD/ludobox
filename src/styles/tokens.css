@@ -22,6 +22,7 @@
   --gold-trophy: #e1a11f; /* trophy icon in history rows */
   --gold-on-gold: #5c3d00; /* muted text on the gold record card — ≥4.5:1 on gold */
   --teal: #147d71; /* "Coopératif", success, rank-2, win portion of bars — AA on crème */
+  --blue: #1f6f9e; /* avatar fill (3rd rotation hue) — AA on crème, gives the dark piece its pop back */
   --putty: #efe1c6; /* disabled CTA fill (dormant, shadow-less) */
 
   /* Hairline divider used inside white popovers (autocomplete, overflow). */

@@ -6,7 +6,7 @@ import { Autocomplete, type AutocompletePlayer } from './Autocomplete';
 const PLAYERS: AutocompletePlayer[] = [
   { id: '1', name: 'Camille', color: 'coral' },
   { id: '2', name: 'Théo', color: 'teal' },
-  { id: '3', name: 'Camille-Anne', color: 'ink' },
+  { id: '3', name: 'Camille-Anne', color: 'blue' },
 ];
 
 describe('Autocomplete', () => {

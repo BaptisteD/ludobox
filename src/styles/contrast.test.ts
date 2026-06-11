@@ -39,6 +39,9 @@ describe('token contrast (WCAG 2.1 AA)', () => {
   it('crème on teal clears 4.5:1 (14px tag/chip text)', () => {
     expect(ratio(creme, token('teal'))).toBeGreaterThanOrEqual(4.5);
   });
+  it('crème on blue clears 4.5:1 (avatar initial)', () => {
+    expect(ratio(creme, token('blue'))).toBeGreaterThanOrEqual(4.5);
+  });
   it('disclosure chevron clears 3:1 on cream', () => {
     expect(ratio(token('chevron-disclosure'), cream)).toBeGreaterThanOrEqual(3);
   });

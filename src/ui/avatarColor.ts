@@ -5,7 +5,7 @@
  */
 import type { AvatarColor } from './Avatar';
 
-const AVATAR_COLORS: AvatarColor[] = ['coral', 'teal', 'ink'];
+const AVATAR_COLORS: AvatarColor[] = ['coral', 'teal', 'blue'];
 
 export function avatarColorForName(name: string): AvatarColor {
   const sum = [...name].reduce((acc, c) => acc + c.charCodeAt(0), 0);
