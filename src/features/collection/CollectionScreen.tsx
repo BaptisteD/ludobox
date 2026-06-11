@@ -11,6 +11,7 @@ import {
   Avatar,
   avatarColorForName,
   Button,
+  Chevron,
   DiceMotif,
   plural,
   Plus,
@@ -111,11 +112,15 @@ export function CollectionScreen({
                       name={game.name}
                       color={avatarColorForName(game.name)}
                       size={48}
+                      shape="square"
                     />
                     <span className={styles.name}>{game.name}</span>
                     <span className={styles.count} aria-hidden="true">
                       <span className={styles.countNum}>{playCount}</span>
                       <span className={styles.countUnit}>{unit}</span>
+                    </span>
+                    <span className={styles.chevron} aria-hidden="true">
+                      <Chevron size={18} />
                     </span>
                   </button>
                 </li>

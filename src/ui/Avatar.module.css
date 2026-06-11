@@ -1,5 +1,4 @@
 .avatar {
-  composes: pieceBase from './styles/signature.module.css';
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -9,6 +8,14 @@
   font-weight: var(--weight-display-extrabold);
   line-height: 1;
   user-select: none;
+}
+
+/* Round game piece (player avatars) vs. square game tile (collection games). */
+.round {
+  composes: pieceBase from './styles/signature.module.css';
+}
+.square {
+  composes: tileBase from './styles/signature.module.css';
 }
 
 .coral {

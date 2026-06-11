@@ -63,6 +63,13 @@
   color: var(--ink-muted);
 }
 
+/* Disclosure chevron — faint, right-edge of each tappable row (maquette 60I-0). */
+.chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--chevron-disclosure);
+}
+
 /* CTA sits under the title/subtitle, above the list (maquette Tabletop pop). */
 .cta {
   margin-bottom: var(--space-1);
