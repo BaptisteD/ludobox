@@ -24,7 +24,9 @@ test('Collection (empty) has no serious a11y violations', async ({ page }) => {
   await expectNoSeriousA11yViolations(page);
 });
 
-test('Fiche jeu compétitive has no serious a11y violations', async ({ page }) => {
+test('Fiche jeu compétitive has no serious a11y violations', async ({
+  page,
+}) => {
   await ready(page);
   await seed(
     page,
@@ -62,7 +64,9 @@ test('Fiche joueur has no serious a11y violations', async ({ page }) => {
   await expectNoSeriousA11yViolations(page);
 });
 
-test('Fiche partie (add play form) has no serious a11y violations', async ({ page }) => {
+test('Fiche partie (add play form) has no serious a11y violations', async ({
+  page,
+}) => {
   await ready(page);
   await seed(
     page,
