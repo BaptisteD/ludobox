@@ -29,8 +29,8 @@ function ratio(a: string, b: string): number {
 }
 
 describe('token contrast (WCAG 2.1 AA)', () => {
-  const creme = '#fff6e9';
-  const cream = '#fdf3e3';
+  const creme = token('on-dark-cream');
+  const cream = token('bg-cream');
 
   it('crème on coral clears 4.5:1 (14px tag/chip text)', () => {
     expect(ratio(creme, token('coral'))).toBeGreaterThanOrEqual(4.5);

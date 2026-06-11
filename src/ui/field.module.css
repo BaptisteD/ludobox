@@ -46,7 +46,7 @@
   caret-color: var(--coral);
 }
 .input::placeholder {
-  color: var(--ink-faint);
+  color: var(--ink-muted);
 }
 
 .leading,
@@ -56,5 +56,5 @@
   color: var(--ink-muted);
 }
 .trailing {
-  color: var(--ink-faint);
+  color: var(--chevron-disclosure);
 }
