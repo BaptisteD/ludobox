@@ -81,7 +81,7 @@
 .optional {
   text-transform: none;
   letter-spacing: 0;
-  color: var(--ink-faint);
+  color: var(--ink-muted);
   font-weight: 700;
 }
 
