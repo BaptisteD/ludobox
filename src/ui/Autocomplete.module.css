@@ -3,6 +3,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  /* Detach the suggestions from the field they relate to. */
+  margin-top: var(--space-3);
   border-radius: var(--radius-chip);
   background: var(--surface-white);
   overflow: hidden;
