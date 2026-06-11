@@ -7,7 +7,8 @@ const tokens = readFileSync(
   'utf8',
 );
 
-/** Read a `--name: #hex;` value out of tokens.css. */
+/** Read a `--name: #hex;` value out of tokens.css. Assumes 6-digit hex (the
+ *  only form tokens.css uses); update the pattern if 3-digit/alpha appears. */
 function token(name: string): string {
   const m = tokens.match(new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{6})`));
   if (!m) throw new Error(`token --${name} not found`);

@@ -47,6 +47,8 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         navigateFallback: 'index.html',
+        // Don't serve the SPA shell for static-asset navigations (a top-level
+        // path that looks like a file with an extension, e.g. /favicon.svg).
         navigateFallbackDenylist: [/^\/[^/?]+\.[^/]+$/],
       },
       devOptions: {
