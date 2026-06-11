@@ -12,15 +12,16 @@
   --on-dark-cream: #fff6e9; /* text/icons on coral, teal, ink */
   --ink-primary: #2a2018; /* titles, body, ALL outlines and shadows */
   --ink-muted: #7a6a56; /* meta, section labels, secondary text */
-  --ink-faint: #c7b493; /* disclosure chevrons, lowest emphasis */
+  --ink-faint: #c7b493; /* lowest-emphasis decoration & disabled (WCAG-exempt) */
+  --chevron-disclosure: #988568; /* tappable-row chevron — ≥3:1 on cream (AA non-text) */
 
   /* ---- Color · game-piece roles ---- */
-  --coral: #e14b6a; /* primary CTA, "Compétitif", failure, rank-3, destructive */
+  --coral: #c43355; /* primary CTA, "Compétitif", failure, rank-3, destructive — AA on crème */
   --gold: #f4b53c; /* record card surface, rank-1 badge */
   --gold-ink: #c98a1e; /* score numbers in history (on cream) */
   --gold-trophy: #e1a11f; /* trophy icon in history rows */
   --gold-on-gold: #7a4f1a; /* muted text on the gold record card */
-  --teal: #1fa091; /* "Coopératif", success, rank-2, win portion of bars */
+  --teal: #147d71; /* "Coopératif", success, rank-2, win portion of bars — AA on crème */
   --putty: #efe1c6; /* disabled CTA fill (dormant, shadow-less) */
 
   /* Hairline divider used inside white popovers (autocomplete, overflow). */

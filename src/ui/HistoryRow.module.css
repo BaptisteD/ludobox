@@ -92,5 +92,5 @@
 .chevron {
   display: inline-flex;
   flex-shrink: 0;
-  color: var(--ink-faint);
+  color: var(--chevron-disclosure);
 }

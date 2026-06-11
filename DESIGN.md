@@ -27,17 +27,19 @@ Hex as authored in the file.
 | `on-dark/cream` | `#FFF6E9` | Text/icons on coral, teal, ink |
 | `ink/primary` | `#2A2018` | Titles, body, all outlines and shadows |
 | `ink/muted` | `#7A6A56` | Meta, section labels, secondary text |
-| `ink/faint` | `#C7B493` | Disclosure chevrons, lowest emphasis |
+| `ink/faint` | `#C7B493` | Lowest-emphasis decoration & disabled (chevron uses `#988568` for AA) |
 
 ### Game-piece colors
 | Token | Hex | Role |
 |---|---|---|
-| `coral` | `#E14B6A` | Primary CTA (Add a play), "Compétitif" tag, failure, rank-3 badge, destructive |
+| `coral` | `#C43355` | Primary CTA (Add a play), "Compétitif" tag, failure, rank-3 badge, destructive |
 | `gold` | `#F4B53C` | Record card surface, rank-1 badge |
 | `gold/ink` | `#C98A1E` | Score numbers in history (on cream) |
 | `gold/trophy` | `#E1A11F` | Trophy icon in history rows |
 | `gold/on-gold` | `#7A4F1A` | Muted text on the gold record card ("pts", subline) |
-| `teal` | `#1FA091` | "Coopératif" tag, success, rank-2 badge, win portion of bars |
+| `teal` | `#147D71` | "Coopératif" tag, success, rank-2 badge, win portion of bars |
+
+> Coral/teal darkened in Brique 8 so 14px crème text on them clears WCAG AA 4.5:1 (was 3.62/3.02).
 
 ### Semantic
 - **Win** = `teal` chip with check icon + label (`Victoire` in competitive history, `Succès` in cooperative). **Loss** = `coral` chip with cross icon + label (`Défaite` competitive, `Échec` cooperative). Always icon + text, never color alone (PRODUCT.md a11y constraint).
