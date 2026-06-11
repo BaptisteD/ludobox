@@ -1,9 +1,10 @@
 /**
  * The two-entry bottom bar (Collection / Joueurs). Rendered by `AppShell` only
  * at first level — it never decides its own presence (the centralized rule
- * lives in `bottomBarVisible`). Active tab is distinguished by a filled icon
- * pill (shape) and an extrabold Baloo label (weight), never by color alone;
- * `aria-current="page"` carries it for assistive tech. Targets are ≥44px.
+ * lives in `bottomBarVisible`). Active tab is distinguished by a filled ink
+ * pill on the whole slot (shape) and an extrabold Baloo label (weight), never
+ * by color alone; `aria-current="page"` carries it for assistive tech.
+ * Targets are ≥44px. The bar reads as a 2px top separator, not a boxed shelf.
  */
 import { Grid, Users } from '@/ui/icons';
 import type { Tab } from './navigation/types';

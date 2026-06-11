@@ -1,37 +1,35 @@
 .bar {
-  composes: outlineMid from '@/ui/styles/signature.module.css';
   position: sticky;
   bottom: 0;
   display: flex;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
-  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+  padding-bottom: max(var(--space-5), env(safe-area-inset-bottom));
   background: var(--bg-cream);
-  border-bottom: none;
-  border-inline: none;
+  border-top: var(--outline-thin) solid var(--ink-primary);
 }
 
+/* Each tab is a rounded slot; the active one fills with ink (the whole pill,
+   not a separate icon disc). Active is carried by shape (fill) + weight. */
 .tab {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: var(--space-1);
-  min-height: 56px;
-  padding: var(--space-1);
+  min-height: 52px;
+  padding: var(--space-2);
+  border: none;
+  border-radius: var(--radius-chip);
   background: none;
   color: var(--ink-muted);
 }
 
-/* The icon pill: outlined when idle, filled ink piece when active (shape cue). */
 .disc {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-round);
-  border: var(--outline-thin) solid transparent;
 }
 
 .label {
@@ -42,12 +40,7 @@
 }
 
 .tab[data-active] {
-  color: var(--ink-primary);
-}
-
-.tab[data-active] .disc {
   background: var(--ink-primary);
-  border-color: var(--ink-primary);
   color: var(--on-dark-cream);
 }
 
