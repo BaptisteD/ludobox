@@ -21,7 +21,7 @@ export function BackHeader({ title, onBack }: BackHeaderProps) {
       >
         <ArrowLeft size={24} />
       </button>
-      <h1 className={styles.title}>{title}</h1>
+      {title ? <h1 className={styles.title}>{title}</h1> : null}
     </header>
   );
 }
